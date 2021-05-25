@@ -1,6 +1,7 @@
 package game.data;
 
 import game.util.PairInt;
+import game.util.Shape;
 import game.util.Util;
 
 public class Field {
@@ -74,6 +75,31 @@ public class Field {
         }
         current = next;
         next = getRandomFigure();
+    }
+
+    //TODO to custom Shape
+    public void removeVerticalLine(int x){
+        for(int j = 0;j < FIELD_HEIGHT; ++j){
+            if(!isEmpty(x,j))
+                removeBlock(gameField[x][j]);
+        }
+    }
+
+    //TODO to custom Shape
+    public void removeHorizontalLine(int y){
+        for(int i = 0;i < FIELD_WIDTH; ++i){
+            removeBlock(gameField[i][y]);
+        }
+    }
+
+    public void removeShape(Shape shape){
+        for(PairInt coordinate : shape.getCoordinates()){
+            removeBlock(coordinate);
+        }
+    }
+
+    public void removeBlock(PairInt coordinate){
+        gameField[coordinate.getX()][coordinate.getY()] = null;
     }
 
     //TODO

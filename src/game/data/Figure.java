@@ -1,11 +1,12 @@
 package game.data;
 
 import game.util.PairInt;
+import game.util.Shape;
 
 public abstract class Figure {
     protected Block[] blocks;
 
-    protected PairInt[][] rotateArray;
+    protected Shape[] rotateArray;
     protected int rotateIndex;
 
     protected PairInt center;
@@ -15,6 +16,7 @@ public abstract class Figure {
         if(rotation == Rotation.DOUBLE)rotateIndex+=2;
         if(rotation == Rotation.LEFT)rotateIndex+=3;
         rotateIndex %= 4;
+        updateCenter();
     }
 
     public void move(Move direction){
@@ -22,6 +24,7 @@ public abstract class Figure {
         if(direction == Move.DOWN)center.addXY(new PairInt(0,1));
         if(direction == Move.LEFT)center.addXY(new PairInt(-1,0));
         if(direction == Move.RIGHT)center.addXY(new PairInt(1,0));
+        updateCenter();
     }
 
     public boolean checkHorizontal(int left,int right){
@@ -41,11 +44,11 @@ public abstract class Figure {
     }
 
     public PairInt[] getCoordinates(){
-        PairInt[] ret = new PairInt[blocks.length];
-        for(int i = 0;i < ret.length; ++i){
-            ret[i] = PairInt.add(center,rotateArray[rotateIndex][i]);
-        }
-        return ret;
+        return rotateArray[rotateIndex].getCoordinates();
+    }
+
+    private void updateCenter(){
+        rotateArray[rotateIndex].setCenter(center);
     }
 
     public Block[] getBlocks(){
