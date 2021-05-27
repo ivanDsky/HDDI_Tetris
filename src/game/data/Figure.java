@@ -11,6 +11,14 @@ public abstract class Figure {
 
     protected PairInt center;
 
+    protected Figure(PairInt center, Shape[] rotateArray, Block[] blocks){
+        this.rotateArray = rotateArray;
+        this.blocks = blocks;
+        this.center = center;
+        //rotateIndex = (new Random()).nextInt(4);
+        updateCenter();
+    }
+
     public void rotate(Rotation rotation){
         if(rotation == Rotation.RIGHT)rotateIndex+=1;
         if(rotation == Rotation.DOUBLE)rotateIndex+=2;
@@ -47,7 +55,7 @@ public abstract class Figure {
         return rotateArray[rotateIndex].getCoordinates();
     }
 
-    private void updateCenter(){
+    protected void updateCenter(){
         rotateArray[rotateIndex].setCenter(center);
     }
 

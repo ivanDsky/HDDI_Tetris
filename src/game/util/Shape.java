@@ -4,13 +4,12 @@ public class Shape {
     protected PairInt center;
     protected PairInt[] coordinates;
 
-    public Shape(PairInt[] coordinates, PairInt center){
-        this.coordinates = coordinates;
+    public Shape(PairInt center){
         this.center = center;
     }
 
-    public Shape(PairInt[] coordinates){
-        this(coordinates,new PairInt(0,0));
+    public Shape(){
+        this(new PairInt(0,0));
     }
 
     public PairInt[] getCoordinates(){
