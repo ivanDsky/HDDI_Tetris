@@ -15,7 +15,6 @@ public abstract class Figure {
         this.rotateArray = rotateArray;
         this.blocks = blocks;
         this.center = center;
-        //rotateIndex = (new Random()).nextInt(4);
         updateCenter();
     }
 
@@ -57,6 +56,16 @@ public abstract class Figure {
 
     protected void updateCenter(){
         rotateArray[rotateIndex].setCenter(center);
+    }
+
+    public void setRotateIndex(int rotateIndex){
+        this.rotateIndex = rotateIndex;
+        updateCenter();
+    }
+
+    public void setCenter(PairInt center){
+        this.center = center;
+        updateCenter();
     }
 
     public Block[] getBlocks(){
