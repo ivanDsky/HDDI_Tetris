@@ -2,7 +2,7 @@ package game.data.figures;
 
 import game.data.Block;
 import game.data.Figure;
-import game.data.blocks.TempBlock;
+import game.data.blocks.ColorBlock;
 import game.data.shapes.TShape0Degree;
 import game.data.shapes.TShape180Degree;
 import game.data.shapes.TShape270Degree;
@@ -24,10 +24,10 @@ public class TFigure extends Figure {
                         new TShape270Degree(),
                 },
                 new Block[]{
-                        new TempBlock(0, 0),
-                        new TempBlock(0, 0),
-                        new TempBlock(0, 0),
-                        new TempBlock(0, 0)
+                        new ColorBlock(0, 0),
+                        new ColorBlock(0, 0),
+                        new ColorBlock(0, 0),
+                        new ColorBlock(0, 0)
                 });
 
     }

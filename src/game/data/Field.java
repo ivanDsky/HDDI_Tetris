@@ -1,12 +1,17 @@
 package game.data;
 
+import game.data.blocks.EmptyBlock;
+import game.data.shapes.HorizontalLineShape;
 import game.util.PairInt;
 import game.util.Shape;
 import game.util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Field {
-    private static final int FIELD_WIDTH = 10;
-    private static final int FIELD_HEIGHT = 25;
+    public static final int FIELD_WIDTH = 10;
+    public static final int FIELD_HEIGHT = 25;
     private final Block[][] gameField;
     private Figure current;
     private Figure next;
@@ -14,6 +19,11 @@ public class Field {
 
     public Field(){
         gameField = new Block[FIELD_WIDTH][FIELD_HEIGHT];
+        for(int i = 0;i < FIELD_WIDTH; ++i){
+            for(int j = 0;j < FIELD_HEIGHT; ++j){
+                gameField[i][j] = new EmptyBlock(i,j);
+            }
+        }
     }
 
     public Block[][] getBlocks(){
@@ -30,6 +40,7 @@ public class Field {
 
     public boolean intersects(Figure figure){
         for(PairInt coordinate : figure.getCoordinates()){
+            if(!isCoordinateOnField(coordinate))continue;
             if(!isEmpty(coordinate))return true;
         }
         return false;
@@ -40,7 +51,7 @@ public class Field {
     }
 
     public boolean isEmpty(int x,int y){
-        return gameField[x][y] == null;
+        return gameField[x][y] instanceof EmptyBlock;
     }
 
     /**
@@ -77,33 +88,72 @@ public class Field {
         next = getRandomFigure();
     }
 
-    //TODO to custom Shape
-    public void removeVerticalLine(int x){
-        for(int j = 0;j < FIELD_HEIGHT; ++j){
-            if(!isEmpty(x,j))
-                removeBlock(gameField[x][j]);
-        }
+    public void removeHorizontalLine(int y){
+        removeShape(new HorizontalLineShape(y,0,FIELD_WIDTH - 1));
     }
 
-    //TODO to custom Shape
-    public void removeHorizontalLine(int y){
-        for(int i = 0;i < FIELD_WIDTH; ++i){
-            removeBlock(gameField[i][y]);
-        }
+    public void removeHorizontalLine(int y,int step){
+        removeShapeAnim(new HorizontalLineShape(y,0,FIELD_WIDTH - 1),step);
     }
 
     public void removeShape(Shape shape){
         for(PairInt coordinate : shape.getCoordinates()){
+            if(!isCoordinateOnField(coordinate))continue;
+            removeBlock(coordinate);
+        }
+    }
+
+    public void removeShapeAnim(Shape shape,int step){
+        for(PairInt coordinate : shape.getWithStep(step)){
+            if(!isCoordinateOnField(coordinate))continue;
             removeBlock(coordinate);
         }
     }
 
     public void removeBlock(PairInt coordinate){
-        gameField[coordinate.getX()][coordinate.getY()] = null;
+        gameField[coordinate.getX()][coordinate.getY()] = new EmptyBlock(coordinate.getX(),coordinate.getY());
     }
 
-    //TODO
+    public boolean isShapeFull(Shape shape){
+        for(PairInt coordinate : shape.getCoordinates()){
+            if(!isCoordinateOnField(coordinate))continue;
+            if(!isEmpty(coordinate))return false;
+        }
+        return true;
+    }
+
+    public boolean isHorizontalFull(int y){
+        return isShapeFull(new HorizontalLineShape(y,0,FIELD_WIDTH - 1));
+    }
+
+    public boolean isCoordinateOnField(PairInt coordinate){
+        return 0 <= coordinate.getX() && coordinate.getX() < FIELD_WIDTH
+                && 0 <= coordinate.getY() && coordinate.getY() < FIELD_HEIGHT;
+    }
+
+    public List<Integer> fullHorizontals(){
+        List<Integer> full = new ArrayList<>();
+        for(int i = 0;i < FIELD_HEIGHT; ++i){
+            if(isHorizontalFull(i))
+                full.add(i);
+        }
+        return full;
+    }
+
     public Figure getRandomFigure(){
+        return Util.getRandomFigure();
+    }
+
+    public Figure getCurrentFigure() {
         return current;
     }
+
+    public void setCurrentFigure(Figure newCurrent) {
+        current = newCurrent;
+    }
+
+    public Figure getNextFigure() {
+        return next;
+    }
 }
+

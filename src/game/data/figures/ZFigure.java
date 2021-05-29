@@ -2,7 +2,7 @@ package game.data.figures;
 
 import game.data.Block;
 import game.data.Figure;
-import game.data.blocks.TempBlock;
+import game.data.blocks.ColorBlock;
 import game.data.shapes.ZShapeHorizontal;
 import game.data.shapes.ZShapeVertical;
 import game.util.PairInt;
@@ -23,10 +23,10 @@ public class ZFigure extends Figure {
                 new ZShapeVertical()
             },
             new Block[]{
-                new TempBlock(0, 0),
-                new TempBlock(0, 0),
-                new TempBlock(0, 0),
-                new TempBlock(0, 0)
+                new ColorBlock(0, 0),
+                new ColorBlock(0, 0),
+                new ColorBlock(0, 0),
+                new ColorBlock(0, 0)
             });
     }
 }

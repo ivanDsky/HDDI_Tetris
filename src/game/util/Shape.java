@@ -27,4 +27,8 @@ public class Shape {
     public void setCenter(PairInt center) {
         this.center = center;
     }
+
+    public PairInt[] getWithStep(int step){
+        return new PairInt[]{coordinates[step]};
+    }
 }
