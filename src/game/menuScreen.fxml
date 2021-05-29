@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.Main">
+   <children>
+      <VBox layoutX="29.0" layoutY="160.0" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <FlowPane alignment="CENTER_LEFT" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="playButton" mnemonicParsing="false" text="Play" />
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="levelsButton" mnemonicParsing="false" text="Levels" />
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="settingsButton" mnemonicParsing="false" text="Settings" />
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="exitButton" mnemonicParsing="false" text="Exit" />
+               </children>
+            </FlowPane>
+         </children>
+      </VBox>
+      <Label layoutX="141.0" layoutY="65.0" prefHeight="70.0" prefWidth="318.0" text="TETRIS DELUXE">
+         <font>
+            <Font name="AppleGothic Regular" size="42.0" />
+         </font>
+      </Label>
+      <Label layoutX="496.0" layoutY="378.0" prefHeight="17.0" prefWidth="90.0" text="Made by HDDI®" />
+   </children>
+</AnchorPane>
