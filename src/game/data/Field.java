@@ -1,5 +1,6 @@
 package game.data;
 
+import game.data.blocks.BlockedBlock;
 import game.data.blocks.EmptyBlock;
 import game.data.shapes.HorizontalLineShape;
 import game.util.PairInt;
@@ -11,17 +12,20 @@ import java.util.List;
 
 public class Field {
     public static final int FIELD_WIDTH = 10;
-    public static final int FIELD_HEIGHT = 25;
+    public static final int FIELD_HEIGHT = 14;
     private final Block[][] gameField;
     private Figure current;
     private Figure next;
     private int gamePause = 10;
 
     public Field(){
+        current = getRandomFigure();
+        next = getRandomFigure();
         gameField = new Block[FIELD_WIDTH][FIELD_HEIGHT];
         for(int i = 0;i < FIELD_WIDTH; ++i){
             for(int j = 0;j < FIELD_HEIGHT; ++j){
-                gameField[i][j] = new EmptyBlock(i,j);
+                if(i - j > 5 && i - j < 4)gameField[i][j] = new BlockedBlock(i, j);
+                else gameField[i][j] = new EmptyBlock(i,j);
             }
         }
     }
@@ -80,12 +84,14 @@ public class Field {
         return false;
     }
 
-    public void endMove(){
+    public boolean endMove(){
         for(Block block : current.getBlocks()){
+            if(block.getY() < 0)return false;
             gameField[block.getX()][block.getY()] = block;
         }
         current = next;
         next = getRandomFigure();
+        return true;
     }
 
     public void removeHorizontalLine(int y){
@@ -117,7 +123,7 @@ public class Field {
     public boolean isShapeFull(Shape shape){
         for(PairInt coordinate : shape.getCoordinates()){
             if(!isCoordinateOnField(coordinate))continue;
-            if(!isEmpty(coordinate))return false;
+            if(isEmpty(coordinate))return false;
         }
         return true;
     }
@@ -141,7 +147,9 @@ public class Field {
     }
 
     public Figure getRandomFigure(){
-        return Util.getRandomFigure();
+        Figure ret = Util.getRandomFigure();
+        ret.setCenter(new PairInt(Util.getRandomNumber(2,FIELD_WIDTH - 3),-2));
+        return ret;
     }
 
     public Figure getCurrentFigure() {

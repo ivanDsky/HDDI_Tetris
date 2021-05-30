@@ -8,7 +8,7 @@ public class HorizontalLineShape extends Shape {
         super(new PairInt(0,y));
         coordinates = new PairInt[to - from + 1];
         for(int i = from;i <= to; ++i){
-            coordinates[i - from] = new PairInt(i,0);
+            coordinates[i - from] = new PairInt(i,y);
         }
     }
 

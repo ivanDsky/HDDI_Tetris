@@ -1,4 +1,4 @@
-package game.data.blocks;
+package game.data;
 
 public interface SpecialAbility {
     void apply();

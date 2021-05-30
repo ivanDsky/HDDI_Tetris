@@ -31,7 +31,7 @@ public class ColorBlock extends Block {
 
         texture.effectProperty().set(blend);
         hBox = new HBox();
-        String style_inner = "-fx-border-color: red;"
+        String style_inner = "-fx-border-color: black;"
                 + "-fx-border-width: 2;";
         hBox.setStyle(style_inner);
         hBox.getChildren().add(texture);
