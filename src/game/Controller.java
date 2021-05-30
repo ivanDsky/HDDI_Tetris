@@ -26,7 +26,7 @@ public class Controller {
         field.endMove();
         field.setCurrentFigure(new TFigure(new PairInt(4,4)));
         field.endMove();
-        field.removeHorizontalLine(1);
+//        field.removeHorizontalLine(1);
         drawField();
     }
 
