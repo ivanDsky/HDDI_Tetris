@@ -15,12 +15,20 @@ public abstract class Block extends PairInt {
         rectangle.setStroke(Color.BLACK);
     }
 
+    public Block(PairInt xy) {
+        this(xy.getX(),xy.getY());
+    }
+
     public void setXY(PairInt xy) {
         setXY(xy.getX(), xy.getY());
     }
 
     public PairInt getXY() {
         return this;
+    }
+
+    public Block removeBlock(Field field){
+        return null;
     }
 
     public abstract Node getNode();

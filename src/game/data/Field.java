@@ -16,7 +16,7 @@ public class Field {
     private final Block[][] gameField;
     private Figure current;
     private Figure next;
-    private int gamePause = 10;
+    public int gamePause = 1200;
 
     public Field(){
         current = getRandomFigure();
@@ -24,10 +24,13 @@ public class Field {
         gameField = new Block[FIELD_WIDTH][FIELD_HEIGHT];
         for(int i = 0;i < FIELD_WIDTH; ++i){
             for(int j = 0;j < FIELD_HEIGHT; ++j){
-                if(i - j > 5 && i - j < 4)gameField[i][j] = new BlockedBlock(i, j);
-                else gameField[i][j] = new EmptyBlock(i,j);
+                gameField[i][j] = new EmptyBlock(i,j);
             }
         }
+        gameField[0][13] = new BlockedBlock(0,13);
+        gameField[1][13] = new BlockedBlock(1,13);
+        gameField[8][13] = new BlockedBlock(8,13);
+        gameField[9][13] = new BlockedBlock(9,13);
     }
 
     public Block[][] getBlocks(){
@@ -117,7 +120,7 @@ public class Field {
     }
 
     public void removeBlock(PairInt coordinate){
-        gameField[coordinate.getX()][coordinate.getY()] = new EmptyBlock(coordinate.getX(),coordinate.getY());
+        gameField[coordinate.getX()][coordinate.getY()] = gameField[coordinate.getX()][coordinate.getY()].removeBlock(this);
     }
 
     public boolean isShapeFull(Shape shape){
@@ -135,6 +138,24 @@ public class Field {
     public boolean isCoordinateOnField(PairInt coordinate){
         return 0 <= coordinate.getX() && coordinate.getX() < FIELD_WIDTH
                 && 0 <= coordinate.getY() && coordinate.getY() < FIELD_HEIGHT;
+    }
+
+    public boolean pushVerticalDown(int x,int fy){
+        for(int y = fy; y >= 0; --y){
+            if(gameField[x][y + 1] == null){
+                gameField[x][y + 1] = gameField[x][y];
+                gameField[x][y + 1].setXY(x,y + 1);
+                gameField[x][y] = null;
+            }
+        }
+        gameField[x][0] = new EmptyBlock(x,0);
+        return true;
+    }
+
+    public void push(int y){
+        for(int i = 0;i < FIELD_WIDTH; ++i){
+            pushVerticalDown(i,y);
+        }
     }
 
     public List<Integer> fullHorizontals(){

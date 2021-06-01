@@ -4,8 +4,6 @@ import game.data.Block;
 import game.data.Field;
 import game.data.Move;
 import game.data.Rotation;
-import game.data.figures.IFigure;
-import game.util.PairInt;
 import game.util.Timer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,9 +20,7 @@ public class Controller implements Initializable {
     private Field field;
 
     public void addKeys(Scene scene){
-        scene.setOnKeyReleased(keyEvent -> {
-            System.out.println("debug::");
-
+        scene.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.UP) field.rotate(Rotation.RIGHT);
             if (keyEvent.getCode() == KeyCode.DOWN) field.move(Move.DOWN);
             if (keyEvent.getCode() == KeyCode.LEFT) field.move(Move.LEFT);
@@ -37,25 +33,21 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         field = new Field();
-        startGame();
 
-        //field.setCurrentFigure(new IFigure(new PairInt(1,1)));
-        //field.endMove();
-        field.setCurrentFigure(new IFigure(new PairInt(1, 4)));
-        field.rotate(Rotation.RIGHT);
-//        field.move(Move.UP);
-//        field.move(Move.RIGHT);
+//        field.setCurrentFigure(new IFigure(new PairInt(1,13)));
 //        field.endMove();
-//        field.setCurrentFigure(new TFigure(new PairInt(4,4)));
+//        field.setCurrentFigure(new IFigure(new PairInt(5,13)));
 //        field.endMove();
-////        field.removeHorizontalLine(1);
+//        field.setCurrentFigure(new OFigure(new PairInt(8,12)));
 //        drawField();
+//        step();
+        startGame();
     }
 
     private Timer timer;
 
     private void startGame() {
-        timer = new Timer(500) {
+        timer = new Timer(field.gamePause) {
             @Override
             public void handle() {
                 step();
@@ -72,12 +64,16 @@ public class Controller implements Initializable {
             }else{
                 for(Integer i : field.fullHorizontals()){
                     field.removeHorizontalLine(i);
+                    field.push(i - 1);
                 }
             }
         }
     }
 
     public void drawField() {
+        gamePane.getColumnConstraints().clear();
+        gamePane.getRowConstraints().clear();
+        gamePane.getChildren().clear();
         for (int i = 0; i < Field.FIELD_WIDTH; ++i) {
             for (int j = 0; j < Field.FIELD_HEIGHT; ++j) {
                 setBlock(field.getBlocks()[i][j]);
@@ -94,10 +90,8 @@ public class Controller implements Initializable {
 
 
     private void setBlock(Block current) {
-        try {
-            gamePane.add(current.getNode(), current.getX(), current.getY());
-        } catch (Exception ignored) {
-        }
+        if(current.getY() < 0)return;
+        gamePane.add(current.getNode(), current.getX(), current.getY());
     }
 
 }
