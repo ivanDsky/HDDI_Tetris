@@ -1,7 +1,9 @@
 package game.data;
 
 import game.data.blocks.BlockedBlock;
+import game.data.blocks.BombBlock;
 import game.data.blocks.EmptyBlock;
+import game.data.blocks.RocketBlock;
 import game.data.shapes.HorizontalLineShape;
 import game.util.PairInt;
 import game.util.Shape;
@@ -28,8 +30,10 @@ public class Field {
             }
         }
         gameField[0][13] = new BlockedBlock(0,13);
-        gameField[1][13] = new BlockedBlock(1,13);
-        gameField[8][13] = new BlockedBlock(8,13);
+        gameField[1][13] = new BombBlock(1,13);
+        gameField[1][12] = new BlockedBlock(1,12);
+        gameField[8][12] = new BlockedBlock(8,12);
+        gameField[8][13] = new RocketBlock(8,13);
         gameField[9][13] = new BlockedBlock(9,13);
     }
 
@@ -97,6 +101,8 @@ public class Field {
         return true;
     }
 
+    private boolean[][] used = new boolean[FIELD_WIDTH][FIELD_HEIGHT];
+
     public void removeHorizontalLine(int y){
         removeShape(new HorizontalLineShape(y,0,FIELD_WIDTH - 1));
     }
@@ -119,7 +125,21 @@ public class Field {
         }
     }
 
+    public void removeCommit(){
+        for(int i = 0;i < FIELD_WIDTH; ++i){
+            for(int j = 0;j < FIELD_HEIGHT; ++j){
+                if(used[i][j]){
+                    used[i][j] = false;
+                    pushVerticalDown(i,j - 1);
+                }
+            }
+        }
+        used = new boolean[FIELD_WIDTH][FIELD_HEIGHT];
+    }
+
     public void removeBlock(PairInt coordinate){
+        if(used[coordinate.getX()][coordinate.getY()])return;
+        used[coordinate.getX()][coordinate.getY()] = true;
         gameField[coordinate.getX()][coordinate.getY()] = gameField[coordinate.getX()][coordinate.getY()].removeBlock(this);
     }
 
@@ -141,6 +161,7 @@ public class Field {
     }
 
     public boolean pushVerticalDown(int x,int fy){
+        if(fy >= FIELD_HEIGHT)return false;
         for(int y = fy; y >= 0; --y){
             if(gameField[x][y + 1] == null){
                 gameField[x][y + 1] = gameField[x][y];
