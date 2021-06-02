@@ -23,6 +23,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="javafx-base-15-win" level="application" />
     <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
