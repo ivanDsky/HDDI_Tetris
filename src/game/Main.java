@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("menuScreen.fxml"));
         primaryStage.setTitle("Tutris");
-        primaryStage.setScene(new Scene(root, 720, 960));
+        primaryStage.setScene(new Scene(root, 720, 480));
         primaryStage.show();
     }
 

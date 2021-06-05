@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class MenuScreenController {
     @FXML
     Button playButton;
@@ -18,12 +20,13 @@ public class MenuScreenController {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    Parent root = FXMLLoader.load(getClass().getResource("gameScreen.fxml"));
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("gameScreen.fxml")));
 
                     Stage primaryStage = (Stage) playButton.getScene().getWindow();
                     primaryStage.setTitle("Tutris 2");
-                    primaryStage.setScene(new Scene(root, 600, 400));
+                    primaryStage.setScene(new Scene(root, 1000, 1125));
                     primaryStage.show();
+                    System.out.println("debug:: playClick123");
                 }catch (Exception ignored){}
 
 
