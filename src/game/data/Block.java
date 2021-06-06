@@ -10,7 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 public abstract class Block extends PairInt {
     protected ImageView texture;
-    protected Rectangle rectangle = new Rectangle(50,50);
+    protected Rectangle rectangle = new Rectangle(35,35);
 
     public Block(int x, int y) {
         super(x, y);

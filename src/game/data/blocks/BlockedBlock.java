@@ -21,8 +21,8 @@ public class BlockedBlock extends Block{
         this.toBlock = toBlock;
         toBlock.setXY(x,y);
         ImageView blockedLevel = new ImageView("game/res/chain_for_block_64x64.png");
-        blockedLevel.setFitWidth(50);
-        blockedLevel.setFitHeight(50);
+        blockedLevel.setFitWidth(35);
+        blockedLevel.setFitHeight(35);
         stackPane = new StackPane(toBlock.getNode(), blockedLevel);
     }
 

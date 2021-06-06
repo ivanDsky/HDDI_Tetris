@@ -86,6 +86,7 @@ public class GameScreenController implements Initializable {
             score.setText(Integer.toString(scoreInt));
             bestScore.setText(Integer.toString(level.highScore));
         });
+        field.score.set(20);
 
         changeFigureButton.setOnAction(actionEvent -> (new SwapFigures(field)).apply());
         skipFigureButton.setOnAction(actionEvent -> (new SkipFigure(field)).apply());
@@ -158,11 +159,14 @@ public class GameScreenController implements Initializable {
 
     private void drawNextFigure(){
         nextFigure.getChildren().clear();
+        nextFigure.getColumnConstraints().clear();
+        nextFigure.getRowConstraints().clear();
         PairInt saveCenter = field.getNextFigure().getCenter();
         field.getNextFigure().setCenter(new PairInt(3,3));
         for (Block block : field.getNextFigure().getBlocks()) {
             setBlock(block,nextFigure);
         }
+
         field.getNextFigure().setCenter(saveCenter);
     }
 

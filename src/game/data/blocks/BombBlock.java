@@ -12,8 +12,8 @@ public class BombBlock extends Block {
     public BombBlock(int x, int y) {
         super(x, y);
         texture = new ImageView("game/res/back_block_bombG.png");
-        texture.setFitWidth(47);
-        texture.setFitHeight(47);
+        texture.setFitWidth(33);
+        texture.setFitHeight(33);
     }
 
     public BombBlock(PairInt xy) {

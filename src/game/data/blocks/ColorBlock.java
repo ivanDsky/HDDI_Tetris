@@ -15,8 +15,8 @@ public class ColorBlock extends Block {
     public ColorBlock(int x, int y, Color color) {
         super(x, y);
         texture = new ImageView("game/res/back_block.png");
-        texture.setFitWidth(47);
-        texture.setFitHeight(47);
+        texture.setFitWidth(33);
+        texture.setFitHeight(33);
 
         ColorAdjust adjust = new ColorAdjust();
         adjust.setSaturation(-1);
@@ -32,7 +32,7 @@ public class ColorBlock extends Block {
         texture.effectProperty().set(blend);
         hBox = new HBox();
         String style_inner = "-fx-border-color: black;"
-                + "-fx-border-width: 2;";
+                + "-fx-border-width: 1;";
         hBox.setStyle(style_inner);
         hBox.getChildren().add(texture);
     }

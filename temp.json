@@ -1,1 +1,8 @@
-{"number":1,"width":10,"height":14,"speed":800,"highScore":18000,"field":["          ","          ","       x  ","       x  ","       x  ","       x  ","       x  ","       x  ","       x  ","          ","  x x     ","xXBxbxxrrX","  x x     ","          "]}
+{
+  "number" : 1,
+  "width" : 10,
+  "height" : 14,
+  "speed" : 800,
+  "highScore" : 18000,
+  "field" : [ "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          " ]
+}
