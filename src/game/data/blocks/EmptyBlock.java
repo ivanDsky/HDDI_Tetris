@@ -2,6 +2,7 @@ package game.data.blocks;
 
 import game.data.Block;
 import game.util.PairInt;
+import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
@@ -13,6 +14,11 @@ public class EmptyBlock extends Block {
 
     public EmptyBlock(PairInt xy) {
         this(xy.getX(),xy.getY());
+    }
+
+    @Override
+    public Timeline animation() {
+        return null;
     }
 
     @Override

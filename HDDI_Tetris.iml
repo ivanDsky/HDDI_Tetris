@@ -25,5 +25,7 @@
     </orderEntry>
     <orderEntry type="library" name="javafx-base-15-win" level="application" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-annotations:2.12.3" level="project" />
+    <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-databind:2.8.0.rc1" level="project" />
   </component>
 </module>

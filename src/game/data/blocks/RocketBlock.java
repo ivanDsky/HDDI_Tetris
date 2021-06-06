@@ -22,9 +22,9 @@ public class RocketBlock extends Block {
 
     @Override
     public Block removeBlock(Field field) {
-        Shape shape = new VerticalLineShape(getX(),0,Field.FIELD_HEIGHT - 1);
+        Shape shape = new VerticalLineShape(getX(),0,field.height - 1);
         field.removeShape(shape);
-        return null;
+        return this;
     }
 
     @Override

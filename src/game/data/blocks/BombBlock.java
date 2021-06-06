@@ -24,7 +24,7 @@ public class BombBlock extends Block {
     public Block removeBlock(Field field) {
         Shape shape = new ExplosionShape(getXY(),1);
         field.removeShape(shape);
-        return null;
+        return this;
     }
 
     @Override

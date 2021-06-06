@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <BorderPane prefWidth="720.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameScreenController">
    <center>
-      <GridPane fx:id="gamePane" gridLinesVisible="true" prefHeight="600.0" BorderPane.alignment="CENTER">
+      <GridPane fx:id="gamePane" gridLinesVisible="true" maxHeight="840.0" maxWidth="600.0" minHeight="840.0" minWidth="600.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.1763000488281" minWidth="10.0" prefWidth="473.1763000488281" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="355.51776123046875" minWidth="10.0" prefWidth="246.82369995117188" />
@@ -92,20 +91,13 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER" prefHeight="139.0" prefWidth="215.0">
                      <children>
-                        <GridPane fx:id="nextFigure" alignment="CENTER" prefHeight="123.0" prefWidth="156.0">
+                        <GridPane fx:id="nextFigure" alignment="CENTER" maxHeight="180.0" maxWidth="200.0" prefHeight="180.0" prefWidth="200.0">
                            <columnConstraints>
                               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
-                           <children>
-                              <ImageView fitHeight="216.0" fitWidth="179.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@res/border.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
                         </GridPane>
                      </children>
                   </FlowPane>

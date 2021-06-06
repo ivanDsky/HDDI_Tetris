@@ -4,6 +4,9 @@ import game.data.Block;
 import game.data.Field;
 import game.data.Move;
 import game.data.Rotation;
+import game.data.blocks.EmptyBlock;
+import game.util.FileLoadLevel;
+import game.util.LoadLevel;
 import game.util.Timer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,25 +20,58 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class GameScreenController implements Initializable {
+    private static int NEXT_WIDTH = 6;
+    private static int NEXT_HEIGHT = 4;
     @FXML
     private GridPane gamePane;
+    @FXML
+    private GridPane nextFigure;
     private Field field;
+
+    private boolean isRotateReloaded = true;
+    private boolean isMoveDownReloaded = true;
+    private boolean isDownPressed = false;
+    private boolean isPaused = false;
 
     public void addKeys(Scene scene){
         scene.getWindow().requestFocus();
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
+            if(isPaused)return;
+            if(keyEvent.getCode() == KeyCode.DOWN){
+                isMoveDownReloaded = true;
+                isDownPressed = false;
+            }
+            if (keyEvent.getCode() == KeyCode.UP) {
+                isRotateReloaded = true;
+            }
+        });
         scene.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.UP) field.rotate(Rotation.RIGHT);
-            if (keyEvent.getCode() == KeyCode.DOWN) field.move(Move.DOWN);
-            if (keyEvent.getCode() == KeyCode.LEFT) field.move(Move.LEFT);
-            if (keyEvent.getCode() == KeyCode.RIGHT) field.move(Move.RIGHT);
-            drawField();
+            if(isPaused)return;
+            boolean draw = false;
+            if (keyEvent.getCode() == KeyCode.UP && isRotateReloaded) {
+                draw = field.rotate(Rotation.RIGHT);
+                isRotateReloaded = false;
+            }
+            if (keyEvent.getCode() == KeyCode.DOWN && isMoveDownReloaded) {
+                isDownPressed = true;
+                draw = field.move(Move.DOWN);
+            }
+            if (keyEvent.getCode() == KeyCode.LEFT)  draw = field.move(Move.LEFT);
+            if (keyEvent.getCode() == KeyCode.RIGHT) draw = field.move(Move.RIGHT);
+            if(draw)drawField();
         });
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        LoadLevel loadLevel = new FileLoadLevel("temp.json");
 
-        field = new Field();
+        field = new Field(loadLevel);
+
+//        field.setCurrentFigure(new IFigure(new PairInt(3,13)));
+//        field.endMove();
+//        field.setCurrentFigure(new IFigure(new PairInt(5,13)));
+//        field.endMove();
 
         startGame();
     }
@@ -53,8 +89,10 @@ public class GameScreenController implements Initializable {
     }
 
     private void step() {
+        drawNextFigure();
         drawField();
         if (!field.move(Move.DOWN)) {
+            if(isDownPressed)isMoveDownReloaded = false;
             if (!field.endMove()){
                 timer.stop();
             }else{
@@ -62,7 +100,16 @@ public class GameScreenController implements Initializable {
                 for(Integer i : full){
                     field.removeHorizontalLine(i);
                 }
-                field.removeCommit();
+                if(field.startAnimation()) {
+                    timer.stop();
+                    field.timeline.setOnFinished(actionEvent -> {
+                        timer.start();
+                        field.removeCommit();
+                    });
+                    field.timeline = null;
+                }else{
+                    field.removeCommit();
+                }
             }
         }
     }
@@ -72,9 +119,9 @@ public class GameScreenController implements Initializable {
         gamePane.getRowConstraints().clear();
         gamePane.getChildren().clear();
 
-        for (int i = 0; i < Field.FIELD_WIDTH; ++i) {
-            for (int j = 0; j < Field.FIELD_HEIGHT; ++j) {
-                setBlock(field.getBlocks()[i][j]);
+        for (int i = 0; i < field.width; ++i) {
+            for (int j = 0; j < field.height; ++j) {
+                setBlock(field.getBlocks()[i][j],gamePane);
             }
         }
         drawFigure();
@@ -82,13 +129,24 @@ public class GameScreenController implements Initializable {
 
     private void drawFigure() {
         for (Block block : field.getCurrentFigure().getBlocks()) {
-            setBlock(block);
+            setBlock(block,gamePane);
         }
     }
 
+    private void drawNextFigure(){
+        nextFigure.getChildren().clear();
+        for(int i = 0;i < NEXT_WIDTH; ++i){
+            for(int j = 0;j < NEXT_HEIGHT; ++j){
+                setBlock(new EmptyBlock(i,j),nextFigure);
+            }
+        }
+        for (Block block : field.getNextFigure().getBlocks()) {
+            setBlock(block,nextFigure);
+        }
+    }
 
-    private void setBlock(Block current) {
+    private void setBlock(Block current,GridPane pane) {
         if (current.getY() < 0) return;
-        gamePane.add(current.getNode(), current.getX(), current.getY());
+        pane.add(current.getNode(), current.getX(), current.getY());
     }
 }

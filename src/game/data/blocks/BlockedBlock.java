@@ -26,10 +26,8 @@ public class BlockedBlock extends ColorBlock{
         if(isBlocked){
             isBlocked = false;
             stackPane.getChildren().remove(blockedLevel);
-            return this;
-        }else{
-            return null;
         }
+        return this;
     }
 
     @Override
