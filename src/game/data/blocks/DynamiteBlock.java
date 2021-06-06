@@ -23,7 +23,7 @@ public class DynamiteBlock extends Block {
     @Override
     public Block removeBlock(Field field) {
         Shape shape = new ExplosionShape(getXY(),2);
-        field.removeShape(shape);
+        field.removeShape(shape,1);
         return this;
     }
 

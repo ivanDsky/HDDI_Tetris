@@ -20,6 +20,8 @@ public class Shape {
         return ret;
     }
 
+    public int getLastStep(){return -1;}
+
     public PairInt getCenter() {
         return center;
     }

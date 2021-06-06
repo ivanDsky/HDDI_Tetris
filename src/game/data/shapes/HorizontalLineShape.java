@@ -4,20 +4,32 @@ import game.util.PairInt;
 import game.util.Shape;
 
 public class HorizontalLineShape extends Shape {
+    private final int from,to;
     public HorizontalLineShape(int y, int from, int to) {
-        super(new PairInt(0,y));
+        this(new PairInt(from + (to - from) >> 1,y),from,to);
+    }
+
+    public HorizontalLineShape(PairInt center, int from, int to) {
+        super(center);
+        this.from = from;
+        this.to = to;
         coordinates = new PairInt[to - from + 1];
         for(int i = from;i <= to; ++i){
-            coordinates[i - from] = new PairInt(i,0);
+            coordinates[i - from] = new PairInt(i - center.getX(),0);
         }
     }
 
-    public HorizontalLineShape(int from,int to) {
+    @Override
+    public int getLastStep() {
+        return Math.max(center.getX() - from,to - center.getX());
+    }
+
+    public HorizontalLineShape(int from, int to) {
         this(0,from,to);
     }
 
     public void setY(int y){
-        setCenter(new PairInt(0,y));
+        setCenter(new PairInt(center.getX(),y));
     }
 
     @Override

@@ -35,4 +35,17 @@ public class PairInt {
     public static PairInt add(PairInt a,PairInt b){
         return new PairInt(a.x + b.x,a.y + b.y);
     }
+
+    @Override
+    public int hashCode() {
+        return x * y;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof PairInt){
+            return x == ((PairInt) obj).x && y == ((PairInt) obj).getY();
+        }
+        return false;
+    }
 }

@@ -22,8 +22,8 @@ public class RocketBlock extends Block {
 
     @Override
     public Block removeBlock(Field field) {
-        Shape shape = new VerticalLineShape(getX(),0,field.height - 1);
-        field.removeShape(shape);
+        Shape shape = new VerticalLineShape(getXY(),0,field.height - 1);
+        field.removeShape(shape,1);
         return this;
     }
 

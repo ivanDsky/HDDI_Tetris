@@ -2,7 +2,7 @@ package game.data.blocks;
 
 import game.data.Block;
 import game.util.PairInt;
-import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
@@ -17,7 +17,7 @@ public class EmptyBlock extends Block {
     }
 
     @Override
-    public Timeline animation() {
+    public KeyFrame animation() {
         return null;
     }
 

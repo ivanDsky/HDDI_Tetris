@@ -2,24 +2,29 @@ package game.data;
 
 import game.data.blocks.EmptyBlock;
 import game.data.shapes.HorizontalLineShape;
-import game.util.LoadLevel;
-import game.util.PairInt;
-import game.util.Shape;
-import game.util.Util;
+import game.util.*;
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Field {
     public int width = 10;
-    public  int height = 14;
-    private final Block[][] gameField;
+    public int height = 14;
+    private Block[][] gameField;
     private Figure current;
     private Figure next;
     public int gamePause = 1200;
     public int blocksToDelete;
     public int blocksToDeleteLeft;
+
+    public IntegerProperty state = new SimpleIntegerProperty(GameState.PLAY.ordinal());
 
     public Field(LoadLevel loadLevel) {
         next = getRandomFigure();
@@ -28,6 +33,7 @@ public class Field {
         width = loadLevel.getWidth();
         height = loadLevel.getHeight();
         gamePause = loadLevel.getSpeed();
+        timeline = new Timeline();
     }
 
     public Block[][] getBlocks() {
@@ -84,7 +90,7 @@ public class Field {
         return false;
     }
 
-    public boolean isGameWon(){
+    public boolean isGameWon() {
         return blocksToDeleteLeft <= 0;
     }
 
@@ -106,55 +112,92 @@ public class Field {
     }
 
     private boolean[][] used = new boolean[width][height];
+    public boolean[][] blocked = new boolean[width][height];
+
+    private final Set<RemoveShape> toRemove = new HashSet<>();
 
     public void removeHorizontalLine(int y) {
-        removeShape(new HorizontalLineShape(y, 0, width - 1));
+        removeShape(new HorizontalLineShape(y, 0, width - 1), 0);
     }
 
-    public void removeHorizontalLine(int y, int step) {
-        removeShapeAnim(new HorizontalLineShape(y, 0, width - 1), step);
+    public void removeShape(Shape shape, int startStep) {
+        toRemove.add(new RemoveShape(shape, startStep));
     }
 
-    public void removeShape(Shape shape) {
-        for (PairInt coordinate : shape.getCoordinates()) {
-            if (!isCoordinateOnField(coordinate)) continue;
-            removeBlock(coordinate);
+    Set<PairInt> set = new HashSet<>();
+
+    public boolean toRemove(Duration lastDuration) {
+        set.clear();
+        List<RemoveShape> rlst = new ArrayList<>();
+        for (RemoveShape shape : toRemove) {
+            List<PairInt> lst = shape.removeCoordinates();
+            if (lst == null) rlst.add(shape);
+            else set.addAll(lst);
         }
-    }
-
-    public void removeShapeAnim(Shape shape, int step) {
-        for (PairInt coordinate : shape.getWithStep(step)) {
+        rlst.forEach(toRemove::remove);
+        KeyFrame last = null;
+        for (PairInt coordinate : set) {
             if (!isCoordinateOnField(coordinate)) continue;
-            removeBlock(coordinate);
+            if (used[coordinate.getX()][coordinate.getY()]) continue;
+            Block block = getBlocks()[coordinate.getX()][coordinate.getY()];
+            KeyFrame temp = block.animation();
+            if (temp == null) continue;
+            temp = new KeyFrame(lastDuration.add(temp.getTime().divide(2)),temp.getOnFinished());
+            timeline.getKeyFrames().add(temp);
+            last = temp;
         }
+        if (last != null) {
+            for (PairInt coordinate : set) {
+                if (!isCoordinateOnField(coordinate)) continue;
+                if (used[coordinate.getX()][coordinate.getY()]) continue;
+                removeBlock(coordinate);
+            }
+
+            if (set.size() > 0) toRemove(last.getTime());
+        }
+        return true;
     }
 
     public Timeline timeline;
 
-    public boolean startAnimation() {
-        for (int i = 0; i < width; ++i) {
-            for (int j = 0; j < height; ++j) {
-                if (used[i][j]) {
-                    if (getBlocks()[i][j] instanceof EmptyBlock) continue;
-                    timeline = gameField[i][j].animation();
-                    timeline.play();
+    public void removeCommit() {
+        timeline.getKeyFrames().add(new KeyFrame(timeline.getTotalDuration().add(new Duration(400))));
+        timeline.setOnFinished(actionEvent -> {
+            Block[][] blocks = new Block[width][height];
+            for (int i = 0; i < width; ++i) {
+                for (int j = 0; j < height; ++j) {
+                    if(used[i][j]){
+                        if(blocked[i][j])blocks[i][j] = getBlocks()[i][j];
+                        continue;
+                    }
+                    int down = getDeletedBlock(i,j);
+                    int nj = j + down;
+                    if(nj >= height)continue;
+                    blocks[i][nj] = getBlocks()[i][j];
+
                 }
             }
-        }
-        return timeline != null;
+            for (int i = 0; i < width; ++i) {
+                for (int j = 0; j < height; ++j) {
+                   if(blocks[i][j] == null)blocks[i][j] = new EmptyBlock(i,j);
+                }
+            }
+            gameField = blocks;
+            state.set(GameState.PLAY.ordinal());
+            timeline.getKeyFrames().clear();
+            used = new boolean[width][height];
+            blocked = new boolean[width][height];
+        });
+        timeline.play();
     }
 
-    public void removeCommit() {
-        for (int i = 0; i < width; ++i) {
-            for (int j = 0; j < height; ++j) {
-                if (used[i][j]) {
-                    used[i][j] = false;
-                    pushVerticalDown(i, j - 1);
-                }
-            }
+    public int getDeletedBlock(int x,int y){
+        int cnt = 0;
+        for(int j = y;j < height; ++j){
+            if(blocked[x][j])return cnt;
+            if(used[x][j])cnt++;
         }
-        //timeline.play();
-        used = new boolean[width][height];
+        return cnt;
     }
 
     public void removeBlock(PairInt coordinate) {
@@ -180,23 +223,6 @@ public class Field {
                 && 0 <= coordinate.getY() && coordinate.getY() < height;
     }
 
-    public boolean pushVerticalDown(int x, int fy) {
-        if (fy >= height) return false;
-        for (int y = fy; y >= 0; --y) {
-            gameField[x][y + 1] = gameField[x][y];
-            gameField[x][y + 1].setXY(x, y + 1);
-
-        }
-        gameField[x][0] = new EmptyBlock(x, 0);
-        return true;
-    }
-
-    public void push(int y) {
-        for (int i = 0; i < width; ++i) {
-            pushVerticalDown(i, y);
-        }
-    }
-
     public List<Integer> fullHorizontals() {
         List<Integer> full = new ArrayList<>();
         for (int i = 0; i < height; ++i) {
@@ -218,7 +244,7 @@ public class Field {
         current = newCurrent;
     }
 
-    public void setNextFigure(Figure newNext){
+    public void setNextFigure(Figure newNext) {
         next = newNext;
     }
 

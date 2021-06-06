@@ -1,9 +1,6 @@
 package game;
 
-import game.data.Block;
-import game.data.Field;
-import game.data.Move;
-import game.data.Rotation;
+import game.data.*;
 import game.data.spells.FreezeGame;
 import game.data.spells.SkipFigure;
 import game.data.spells.SwapFigures;
@@ -18,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.List;
@@ -39,12 +37,11 @@ public class GameScreenController implements Initializable {
     private boolean isRotateReloaded = true;
     private boolean isMoveDownReloaded = true;
     private boolean isDownPressed = false;
-    private boolean isPaused = false;
 
     public void addKeys(Scene scene){
         scene.getWindow().requestFocus();
         scene.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
-            if(isPaused)return;
+            if(field.state.get() != GameState.PLAY.ordinal())return;
             if(keyEvent.getCode() == KeyCode.DOWN){
                 isMoveDownReloaded = true;
                 isDownPressed = false;
@@ -54,7 +51,7 @@ public class GameScreenController implements Initializable {
             }
         });
         scene.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
-            if(isPaused)return;
+            if(field.state.get() != GameState.PLAY.ordinal())return;
             boolean draw = false;
             if (keyEvent.getCode() == KeyCode.UP && isRotateReloaded) {
                 draw = field.rotate(Rotation.RIGHT);
@@ -89,6 +86,7 @@ public class GameScreenController implements Initializable {
         timer = new Timer(field.gamePause) {
             @Override
             public void handle() {
+                if(field.state.get() != GameState.PLAY.ordinal())return;
                 step();
                 timer.setCycleDuration(field.gamePause);
             }
@@ -104,20 +102,12 @@ public class GameScreenController implements Initializable {
             if (!field.endMove()){
                 timer.stop();
             }else{
+                field.state.set(GameState.REMOVE.ordinal());
                 List<Integer> full = field.fullHorizontals();
                 for(Integer i : full){
                     field.removeHorizontalLine(i);
                 }
-                if(field.startAnimation()) {
-                    timer.stop();
-                    field.timeline.setOnFinished(actionEvent -> {
-                        timer.start();
-                        field.removeCommit();
-                    });
-                    field.timeline = null;
-                }else{
-                    field.removeCommit();
-                }
+                if(field.toRemove(Duration.ZERO))field.removeCommit();
             }
         }
     }
@@ -129,6 +119,7 @@ public class GameScreenController implements Initializable {
 
         for (int i = 0; i < field.width; ++i) {
             for (int j = 0; j < field.height; ++j) {
+                field.getBlocks()[i][j].setXY(i,j);
                 setBlock(field.getBlocks()[i][j],gamePane);
             }
         }

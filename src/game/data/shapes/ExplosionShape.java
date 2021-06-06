@@ -21,17 +21,22 @@ public class ExplosionShape extends Shape {
     }
 
     @Override
+    public int getLastStep() {
+        return radius;
+    }
+
+    @Override
     public PairInt[] getWithStep(int step) {
         if(step == 0)return new PairInt[]{center};
         PairInt[] ret = new PairInt[(1 << (step + 1))];
         int id = 0;
-        ret[id++] = new PairInt(-radius,0);
-        for(int i = -radius + 1;i < radius; ++i){
-            int abs = radius - Math.abs(i);
-            ret[id++] = new PairInt(i,-abs);
-            ret[id++] = new PairInt(i,abs);
+        ret[id++] = PairInt.add(center,new PairInt(-step,0));
+        for(int i = -step + 1; i < step; ++i){
+            int abs = step - Math.abs(i);
+            ret[id++] = PairInt.add(center,new PairInt(i,-abs));
+            ret[id++] = PairInt.add(center,new PairInt(i,abs));
         }
-        ret[id] = new PairInt(-radius,0);
+        ret[id] = PairInt.add(center,new PairInt(-step,0));
         return ret;
     }
 }
