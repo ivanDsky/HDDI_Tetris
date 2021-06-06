@@ -12,8 +12,8 @@ public class DynamiteBlock extends Block {
     public DynamiteBlock(int x, int y) {
         super(x, y);
         texture = new ImageView("game/res/back_block_dynamite.png");
-        texture.setFitWidth(33);
-        texture.setFitHeight(33);
+        texture.setFitWidth(35);
+        texture.setFitHeight(35);
     }
 
     public DynamiteBlock(PairInt xy) {

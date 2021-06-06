@@ -7,18 +7,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    public static String levelPath;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
-        Parent root = loader.load();
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 700, 800));
+        Parent root = FXMLLoader.load(getClass().getResource("menuScreen.fxml"));
         primaryStage.setResizable(false);
+        primaryStage.setTitle("Menu");
+        primaryStage.setScene(new Scene(root,720,480));
         primaryStage.show();
-
-        GameScreenController controller = loader.getController();
-        controller.addKeys(primaryStage.getScene());
     }
 
 

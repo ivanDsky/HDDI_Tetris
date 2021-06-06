@@ -7,6 +7,7 @@ import game.data.shapes.SShapeHorizontal;
 import game.data.shapes.SShapeVertical;
 import game.util.PairInt;
 import game.util.Shape;
+import javafx.scene.paint.Color;
 
 public class SFigure extends Figure {
     protected SFigure(PairInt center, Shape[] rotateArray, Block[] blocks) {
@@ -22,10 +23,10 @@ public class SFigure extends Figure {
                         new SShapeVertical()
                 },
                 new Block[]{
-                        new ColorBlock(0, 0),
-                        new ColorBlock(0, 0),
-                        new ColorBlock(0, 0),
-                        new ColorBlock(0, 0)
+                        new ColorBlock(0, 0, Color.web("3CAEA3")),
+                        new ColorBlock(0, 0, Color.web("3CAEA3")),
+                        new ColorBlock(0, 0, Color.web("3CAEA3")),
+                        new ColorBlock(0, 0, Color.web("3CAEA3"))
                 });
     }
 }

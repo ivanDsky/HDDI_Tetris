@@ -9,6 +9,7 @@ import game.data.shapes.TShape270Degree;
 import game.data.shapes.TShape90Degree;
 import game.util.PairInt;
 import game.util.Shape;
+import javafx.scene.paint.Color;
 
 public class TFigure extends Figure {
     protected TFigure(PairInt center, Shape[] rotateArray, Block[] blocks) {
@@ -24,10 +25,10 @@ public class TFigure extends Figure {
                         new TShape270Degree(),
                 },
                 new Block[]{
-                        new ColorBlock(0, 0),
-                        new ColorBlock(0, 0),
-                        new ColorBlock(0, 0),
-                        new ColorBlock(0, 0)
+                        new ColorBlock(0, 0, Color.web("4169E1")),
+                        new ColorBlock(0, 0, Color.web("4169E1")),
+                        new ColorBlock(0, 0, Color.web("4169E1")),
+                        new ColorBlock(0, 0, Color.web("4169E1"))
                 });
 
     }

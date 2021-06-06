@@ -7,13 +7,19 @@ import game.data.spells.SkipFigure;
 import game.data.spells.SwapFigures;
 import game.util.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
@@ -25,6 +31,8 @@ import java.util.ResourceBundle;
 public class GameScreenController implements Initializable {
     @FXML
     private GridPane gamePane;
+    @FXML
+    private AnchorPane rootPane;
     @FXML
     private GridPane nextFigure;
     @FXML
@@ -41,6 +49,8 @@ public class GameScreenController implements Initializable {
     private Label levelNumber;
     @FXML
     private Label cubes;
+    @FXML
+    private Button pauseButton;
     private Field field;
     private Level level;
 
@@ -48,9 +58,8 @@ public class GameScreenController implements Initializable {
     private boolean isMoveDownReloaded = true;
     private boolean isDownPressed = false;
 
-    public void addKeys(Scene scene){
-        scene.getWindow().requestFocus();
-        scene.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
+    public void addKeys(){
+        rootPane.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
             if(field.state.get() != GameState.PLAY.ordinal())return;
             if(keyEvent.getCode() == KeyCode.DOWN){
                 isMoveDownReloaded = true;
@@ -60,7 +69,7 @@ public class GameScreenController implements Initializable {
                 isRotateReloaded = true;
             }
         });
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
+        rootPane.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
             if(field.state.get() != GameState.PLAY.ordinal())return;
             boolean draw = false;
             if (keyEvent.getCode() == KeyCode.UP && isRotateReloaded) {
@@ -79,7 +88,7 @@ public class GameScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        LoadLevel loadLevel = new FileLoadLevel("temp.json");
+        LoadLevel loadLevel = new FileLoadLevel(Main.levelPath);
         level= loadLevel.getLevel();
         field = new Field(loadLevel);
 
@@ -100,7 +109,28 @@ public class GameScreenController implements Initializable {
         changeFigureButton.setOnAction(actionEvent -> (new SwapFigures(field)).apply());
         skipFigureButton.setOnAction(actionEvent -> (new SkipFigure(field)).apply());
         freezeFigureButton.setOnAction(actionEvent -> (new FreezeGame(field)).apply());
+        pauseButton.setOnAction(actionEvent -> {
+            saveHighScore();
+            Stage primaryStage = (Stage) changeFigureButton.getScene().getWindow();
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(getClass().getResource("menuScreen.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            primaryStage.setResizable(false);
+            primaryStage.setTitle("Menu");
+            primaryStage.setScene(new Scene(root,720,480));
+            primaryStage.show();
 
+            Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+            double centerY = bounds.getMinY() + (bounds.getHeight() - 480) / 2;
+            primaryStage.setY(centerY);
+            double centerX = bounds.getMinX() + (bounds.getWidth() - 720) / 2;
+            primaryStage.setX(centerX);
+        });
+
+        addKeys();
         startGame();
     }
 

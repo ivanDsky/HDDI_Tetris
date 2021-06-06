@@ -7,6 +7,7 @@ import game.data.shapes.ZShapeHorizontal;
 import game.data.shapes.ZShapeVertical;
 import game.util.PairInt;
 import game.util.Shape;
+import javafx.scene.paint.Color;
 
 public class ZFigure extends Figure {
 
@@ -23,10 +24,10 @@ public class ZFigure extends Figure {
                 new ZShapeVertical()
             },
             new Block[]{
-                new ColorBlock(0, 0),
-                new ColorBlock(0, 0),
-                new ColorBlock(0, 0),
-                new ColorBlock(0, 0)
+                    new ColorBlock(0, 0, Color.web("CD00CD")),
+                    new ColorBlock(0, 0, Color.web("CD00CD")),
+                    new ColorBlock(0, 0, Color.web("CD00CD")),
+                    new ColorBlock(0, 0, Color.web("CD00CD"))
             });
     }
 }

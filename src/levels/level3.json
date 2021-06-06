@@ -1,0 +1,23 @@
+{
+  "number" : 3,
+  "width" : 10,
+  "height" : 14,
+  "speed" : 1200,
+  "highScore" : 0,
+  "field" : [
+    "          ",
+    "          ",
+    "          ",
+    "          ",
+    "          ",
+    "          ",
+    "          ",
+    "          ",
+    "  x    x  ",
+    "   x  x   ",
+    "    xx    ",
+    "  bx  xb  ",
+    " b  xx  b ",
+    "Dxx    xxD"
+    ]
+}

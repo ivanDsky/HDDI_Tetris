@@ -9,6 +9,7 @@ import game.data.shapes.LShape270Degree;
 import game.data.shapes.LShape90Degree;
 import game.util.PairInt;
 import game.util.Shape;
+import javafx.scene.paint.Color;
 
 public class LFigure extends Figure {
     protected LFigure(PairInt center, Shape[] rotateArray, Block[] blocks) {
@@ -24,10 +25,10 @@ public class LFigure extends Figure {
                         new LShape270Degree(),
                 },
                 new Block[]{
-                        new ColorBlock(0, 0),
-                        new ColorBlock(0, 0),
-                        new ColorBlock(0, 0),
-                        new ColorBlock(0, 0)
+                        new ColorBlock(0, 0, Color.web("F6D55C")),
+                        new ColorBlock(0, 0, Color.web("F6D55C")),
+                        new ColorBlock(0, 0, Color.web("F6D55C")),
+                        new ColorBlock(0, 0, Color.web("F6D55C"))
                 });
 
     }

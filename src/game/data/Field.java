@@ -35,6 +35,8 @@ public class Field {
         gameField = loadLevel.loadBlocks();
         width = level.width;
         height = level.height;
+        used = new boolean[width][height];
+        blocked = new boolean[width][height];
         for(int i = 0;i < width; ++i){
             for(int j = 0;j < height; ++j){
                 if(Character.toLowerCase(level.field[j][i]) == 'x')blocksToDelete++;
@@ -122,8 +124,8 @@ public class Field {
         next = getRandomFigure();
     }
 
-    private boolean[][] used = new boolean[width][height];
-    public boolean[][] blocked = new boolean[width][height];
+    private boolean[][] used;
+    public boolean[][] blocked;
 
     private final Set<RemoveShape> toRemove = new HashSet<>();
 

@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="720.0" style="-fx-background-color: beige;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameScreenController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="720.0" style="-fx-background-color: beige;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameScreenController">
    <children>
       <ImageView fitHeight="829.0" fitWidth="730.0" layoutX="-5.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -24,11 +24,6 @@
             <Font name="Comic Sans MS" size="29.0" />
          </font>
       </Label>
-      <ImageView fx:id="pauseButton" fitHeight="50.0" fitWidth="50.0" layoutX="652.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@res/gamePauseButton.png" />
-         </image>
-      </ImageView>
       <Label layoutX="26.0" layoutY="31.0" prefHeight="38.0" prefWidth="125.0" text="Tetris:HDDI">
          <font>
             <Font name="Comic Sans MS" size="16.0" />
@@ -78,15 +73,6 @@
                               <ImageView fitHeight="55.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@res/gameFreezeButton.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: transparent;">
-                           <graphic>
-                              <ImageView fitHeight="55.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@res/gameSlowButton.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -189,5 +175,14 @@
             </GridPane>
          </center>
       </BorderPane>
+      <Button fx:id="pauseButton" contentDisplay="CENTER" layoutX="636.0" layoutY="15.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="59.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@res/gamePauseButton.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

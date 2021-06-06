@@ -12,8 +12,8 @@ public class RocketBlock extends Block {
     public RocketBlock(int x, int y) {
         super(x, y);
         texture = new ImageView("game/res/back_block_rocket.png");
-        texture.setFitWidth(33);
-        texture.setFitHeight(33);
+        texture.setFitWidth(35);
+        texture.setFitHeight(35);
     }
 
     public RocketBlock(PairInt xy) {
