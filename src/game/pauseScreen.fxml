@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.LevelScreenController">
    <children>
-      <ImageView fitHeight="480.0" fitWidth="720.0">
+      <ImageView fitHeight="480.0" fitWidth="720.0" style="-fx-background-color: lightgrey; -fx-background-radius: 30;">
          <image>
             <Image url="@res/levelsMainBG.png" />
          </image>

@@ -98,7 +98,7 @@ public class GameScreenController implements Initializable {
             score.setText(Integer.toString(scoreInt));
             bestScore.setText(Integer.toString(level.highScore));
         });
-        field.score.set(20);
+        field.score.set(0);
         field.blocksDeleted.addListener((observableValue, number, t1) -> {
             cubes.setText(String.format("%d/%d",field.blocksDeleted.get(),field.blocksToDelete));
         });
