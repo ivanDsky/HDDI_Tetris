@@ -4,6 +4,8 @@ import game.data.Block;
 import game.data.Field;
 import game.data.Move;
 import game.data.Rotation;
+import game.data.spells.FreezeGame;
+import game.data.spells.SkipFigure;
 import game.data.spells.SwapFigures;
 import game.util.FileLoadLevel;
 import game.util.LoadLevel;
@@ -28,6 +30,10 @@ public class GameScreenController implements Initializable {
     private GridPane nextFigure;
     @FXML
     private Button changeFigureButton;
+    @FXML
+    private Button freezeFigureButton;
+    @FXML
+    private Button skipFigureButton;
     private Field field;
 
     private boolean isRotateReloaded = true;
@@ -71,6 +77,8 @@ public class GameScreenController implements Initializable {
         field = new Field(loadLevel);
 
         changeFigureButton.setOnAction(actionEvent -> (new SwapFigures(field)).apply());
+        skipFigureButton.setOnAction(actionEvent -> (new SkipFigure(field)).apply());
+        freezeFigureButton.setOnAction(actionEvent -> (new FreezeGame(field)).apply());
 
         startGame();
     }
@@ -82,6 +90,7 @@ public class GameScreenController implements Initializable {
             @Override
             public void handle() {
                 step();
+                timer.setCycleDuration(field.gamePause);
             }
         };
         timer.start();
@@ -134,10 +143,12 @@ public class GameScreenController implements Initializable {
 
     private void drawNextFigure(){
         nextFigure.getChildren().clear();
+        PairInt saveCenter = field.getNextFigure().getCenter();
         field.getNextFigure().setCenter(new PairInt(3,3));
         for (Block block : field.getNextFigure().getBlocks()) {
             setBlock(block,nextFigure);
         }
+        field.getNextFigure().setCenter(saveCenter);
     }
 
     private void setBlock(Block current,GridPane pane) {

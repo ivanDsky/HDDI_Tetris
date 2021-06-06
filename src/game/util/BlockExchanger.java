@@ -15,7 +15,7 @@ public class BlockExchanger {
 
     public static Block getBlock(char letter){
         if(letter == ' ')return new EmptyBlock(0,0);
-        if(letter == '#')return new BlockedBlock(0,0);
+        if(letter == '#')return new BlockedBlock(0,0,new DeleteBlock(0,0));
         if(letter == '/')return new DynamiteBlock(0,0);
         if(letter == '!')return new RocketBlock(0,0);
         if(letter == '0')return new BombBlock(0,0);

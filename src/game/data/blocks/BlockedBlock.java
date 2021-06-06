@@ -2,32 +2,47 @@ package game.data.blocks;
 
 import game.data.Block;
 import game.data.Field;
+import game.util.PairInt;
+import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
-public class BlockedBlock extends ColorBlock{
-    private final ImageView blockedLevel = new ImageView("game/res/chain_for_block_64x64.png");
-    private final StackPane stackPane;
+public class BlockedBlock extends Block{
+    private StackPane stackPane;
+    private Block toBlock;
 
-    public BlockedBlock(int x, int y) {
-        super(x, y, Color.RED);
-        blockedLevel.setFitWidth(texture.getFitWidth());
-        blockedLevel.setFitHeight(texture.getFitHeight());
-        isBlocked = true;
-        stackPane = new StackPane(texture,blockedLevel);
+    private BlockedBlock(int x, int y) {
+        super(x, y);
     }
 
-    private boolean isBlocked;
+    public BlockedBlock(int x, int y, Block toBlock) {
+        this(x,y);
+        this.toBlock = toBlock;
+        ImageView blockedLevel = new ImageView("game/res/chain_for_block_64x64.png");
+        blockedLevel.setFitWidth(50);
+        blockedLevel.setFitHeight(50);
+        stackPane = new StackPane(toBlock.getNode(), blockedLevel);
+    }
 
     @Override
     public Block removeBlock(Field field) {
-        if(isBlocked){
-            isBlocked = false;
-            stackPane.getChildren().remove(blockedLevel);
-        }
-        return this;
+        return toBlock;
+    }
+
+    @Override
+    public void setXY(PairInt xy) {
+        toBlock.setXY(xy);
+    }
+
+    @Override
+    public PairInt getXY() {
+        return toBlock.getXY();
+    }
+
+    @Override
+    public Timeline animation() {
+        return toBlock.animation();
     }
 
     @Override

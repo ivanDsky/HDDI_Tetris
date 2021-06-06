@@ -18,11 +18,12 @@ public class Field {
     private Figure current;
     private Figure next;
     public int gamePause = 1200;
+    public int blocksToDelete;
+    public int blocksToDeleteLeft;
 
     public Field(LoadLevel loadLevel) {
-        current = getRandomFigure();
-        current.setCenter(new PairInt(Util.getRandomNumber(2, width - 3), -2));
         next = getRandomFigure();
+        skipMove();
         gameField = loadLevel.loadBlocks();
         width = loadLevel.getWidth();
         height = loadLevel.getHeight();
@@ -83,14 +84,25 @@ public class Field {
         return false;
     }
 
+    public boolean isGameWon(){
+        return blocksToDeleteLeft <= 0;
+    }
+
     public boolean endMove() {
         for (Block block : current.getBlocks()) {
             if (block.getY() < 0) return false;
             gameField[block.getX()][block.getY()] = block;
         }
         current = next;
+        current.setCenter(new PairInt(Util.getRandomNumber(2, width - 3), -2));
         next = getRandomFigure();
         return true;
+    }
+
+    public void skipMove() {
+        current = next;
+        current.setCenter(new PairInt(Util.getRandomNumber(2, width - 3), -2));
+        next = getRandomFigure();
     }
 
     private boolean[][] used = new boolean[width][height];
