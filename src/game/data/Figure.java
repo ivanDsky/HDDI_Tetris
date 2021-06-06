@@ -76,6 +76,12 @@ public abstract class Figure {
         return blocks;
     }
 
+    public void setBlock(Block block,int index){
+        if(index < 0 || index >= blocks.length)return;
+        block.setXY(blocks[index].getXY());
+        blocks[index] = block;
+    }
+
     public PairInt getCenter() {
         return center;
     }

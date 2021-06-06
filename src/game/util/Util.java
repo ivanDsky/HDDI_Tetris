@@ -40,11 +40,13 @@ public class Util {
         if(code == Figures.S)return new SFigure(center);
         if(code == Figures.T)return new TFigure(center);
         if(code == Figures.Z)return new ZFigure(center);
+        if(code == Figures.B)return new BonusFigure(center);
+        if(code == Figures.BB)return new BonusBigFigure(center);
         return null;
     }
 
     public static Figure getRandomFigure(){
-        int code = random.nextInt(7);
+        int code = random.nextInt(9);
         return getFigure(Figures.values()[code]);
     }
 }

@@ -4,6 +4,9 @@
   "height" : 14,
   "speed" : 1200,
   "highScore" : 0,
+  "skipSpells" : 10,
+  "swapSpells" : -1,
+  "freezeSpells" : 5,
   "field" : [
     "          ",
     "          ",

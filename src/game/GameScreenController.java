@@ -65,6 +65,13 @@ public class GameScreenController implements Initializable {
     @FXML
     private Label pauseLabel;
 
+    @FXML
+    private Label countSkip;
+    @FXML
+    private Label countSwap;
+    @FXML
+    private Label countFreeze;
+
     private Field field;
     private Level level;
 
@@ -72,10 +79,10 @@ public class GameScreenController implements Initializable {
     private boolean isMoveDownReloaded = true;
     private boolean isDownPressed = false;
 
-    public void addKeys(){
+    public void addKeys() {
         rootPane.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
-            if(field.state.get() != GameState.PLAY.ordinal())return;
-            if(keyEvent.getCode() == KeyCode.DOWN){
+            if (field.state.get() != GameState.PLAY.ordinal()) return;
+            if (keyEvent.getCode() == KeyCode.DOWN) {
                 isMoveDownReloaded = true;
                 isDownPressed = false;
             }
@@ -84,7 +91,7 @@ public class GameScreenController implements Initializable {
             }
         });
         rootPane.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
-            if(field.state.get() != GameState.PLAY.ordinal())return;
+            if (field.state.get() != GameState.PLAY.ordinal()) return;
             boolean draw = false;
             if (keyEvent.getCode() == KeyCode.UP && isRotateReloaded) {
                 draw = field.rotate(Rotation.RIGHT);
@@ -94,28 +101,35 @@ public class GameScreenController implements Initializable {
                 isDownPressed = true;
                 draw = field.move(Move.DOWN);
             }
-            if (keyEvent.getCode() == KeyCode.LEFT)  draw = field.move(Move.LEFT);
+            if (keyEvent.getCode() == KeyCode.LEFT) draw = field.move(Move.LEFT);
             if (keyEvent.getCode() == KeyCode.RIGHT) draw = field.move(Move.RIGHT);
-            if(draw)drawField();
+            if (draw) drawField();
         });
     }
+
+
+    private Spell swap, skip, freeze;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         LoadLevel loadLevel = new FileLoadLevel(Main.levelPath);
-        level= loadLevel.getLevel();
+        level = loadLevel.getLevel();
         field = new Field(loadLevel);
 
         field.score.addListener((observableValue, number, t1) -> {
             int scoreInt = t1.intValue();
-            if(scoreInt > level.highScore)level.highScore = scoreInt;
+            if (scoreInt > level.highScore) level.highScore = scoreInt;
             score.setText(Integer.toString(scoreInt));
             bestScore.setText(Integer.toString(level.highScore));
+            if(number.intValue() / 10000 < t1.intValue() / 10000){
+                field.gamePause *= 0.9;
+            }
         });
         field.score.set(0);
         field.blocksDeleted.addListener((observableValue, number, t1) -> {
-            cubes.setText(String.format("%d/%d",field.blocksDeleted.get(),field.blocksToDelete));
-            if(field.blocksToDelete != 0 && field.isGameWon()){
+            cubes.setText(String.format("%d/%d", field.blocksDeleted.get(), field.blocksToDelete));
+            if (field.blocksToDelete != 0 && field.isGameWon()) {
                 pauseMenu.setVisible(true);
                 pauseLabel.setText("You win!!!");
                 playButton.setManaged(false);
@@ -126,21 +140,37 @@ public class GameScreenController implements Initializable {
         });
         field.blocksDeleted.set(0);
 
-        if(level.number == 6)levelNumber.setText("∞");
-        else
-        levelNumber.setText(Integer.toString(level.number));
+        levelNumber.setText(getWithInf(level.number));
+        swap = new SwapFigures(field, level.swapSpells);
+        skip = new SkipFigure(field, level.skipSpells);
+        freeze = new FreezeGame(field, level.freezeSpells);
+
+
+        countSwap.setText(getWithInf(swap.leftSpells));
+        countSkip.setText(getWithInf(skip.leftSpells));
+        countFreeze.setText(getWithInf(freeze.leftSpells));
 
         changeFigureButton.setOnAction(actionEvent -> {
-            if(field.state.get() == GameState.PLAY.ordinal())
-                (new SwapFigures(field)).apply();
+            if (field.state.get() == GameState.PLAY.ordinal()) {
+                swap.apply();
+                countSwap.setText(getWithInf(swap.leftSpells));
+                drawField();
+                drawNextFigure();
+            }
         });
         skipFigureButton.setOnAction(actionEvent -> {
-            if(field.state.get() == GameState.PLAY.ordinal())
-                (new SkipFigure(field)).apply();
+            if (field.state.get() == GameState.PLAY.ordinal()) {
+                skip.apply();
+                countSkip.setText(getWithInf(skip.leftSpells));
+                drawField();
+                drawNextFigure();
+            }
         });
         freezeFigureButton.setOnAction(actionEvent -> {
-            if(field.state.get() == GameState.PLAY.ordinal())
-                (new FreezeGame(field)).apply();
+            if (field.state.get() == GameState.PLAY.ordinal()) {
+                freeze.apply();
+                countFreeze.setText(getWithInf(freeze.leftSpells));
+            }
         });
         pauseButton.setOnAction(actionEvent -> {
             pauseLabel.setText("Pause");
@@ -150,7 +180,7 @@ public class GameScreenController implements Initializable {
             field.state.set(GameState.PAUSE.ordinal());
         });
 
-        menuButton.setOnAction(actionEvent ->{
+        menuButton.setOnAction(actionEvent -> {
             Stage primaryStage = (Stage) changeFigureButton.getScene().getWindow();
             Parent root = null;
             try {
@@ -160,7 +190,7 @@ public class GameScreenController implements Initializable {
             }
             primaryStage.setResizable(false);
             primaryStage.setTitle("Menu");
-            primaryStage.setScene(new Scene(root,720,480));
+            primaryStage.setScene(new Scene(root, 720, 480));
             primaryStage.show();
 
             Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
@@ -175,17 +205,45 @@ public class GameScreenController implements Initializable {
             field.state.set(GameState.PLAY.ordinal());
         });
 
+        resetButton.setOnAction(actionEvent -> {
+            reload();
+        });
+
         addKeys();
         startGame();
     }
 
-    private void saveHighScore(){
+    public void reload(){
+        Scene scene = playButton.getScene();
+        Parent root = null;
         try {
-            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(new File(Main.levelPath),level);
+            root = FXMLLoader.load(Main.class.getResource("gameScreen.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        Stage primaryStage = (Stage) scene.getWindow();
+        primaryStage.setTitle("Game");
+        primaryStage.setResizable(false);
+        scene = new Scene(root,700,820);
+        primaryStage.setScene(scene);
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        primaryStage.setX(bounds.getMinX() + bounds.getWidth() / 2 - 410);
+        primaryStage.setY(0);
+    }
+
+    private void saveHighScore() {
+        try {
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(new File(Main.levelPath), level);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String getWithInf(int x) {
+        if (x == -1) return "∞";
+        return Integer.toString(x);
     }
 
     private Timer timer;
@@ -202,30 +260,30 @@ public class GameScreenController implements Initializable {
     }
 
     private void step() {
-        if(field.state.get() != GameState.PLAY.ordinal())return;
+        if (field.state.get() != GameState.PLAY.ordinal()) return;
         drawField();
         drawNextFigure();
         if (!field.move(Move.DOWN)) {
-            if(isDownPressed)isMoveDownReloaded = false;
-            if (!field.endMove()){
+            if (isDownPressed) isMoveDownReloaded = false;
+            if (!field.endMove()) {
                 playButton.setManaged(false);
                 playButton.setVisible(false);
-                if(level.number == 6){
+                if (level.number == -1) {
                     pauseLabel.setText("Your score " + field.score.get());
                     saveHighScore();
-                }else {
+                } else {
                     pauseLabel.setText("You lose...");
                 }
                 pauseMenu.setVisible(true);
                 field.state.set(GameState.END.ordinal());
                 timer.stop();
-            }else{
+            } else {
                 field.state.set(GameState.REMOVE.ordinal());
                 List<Integer> full = field.fullHorizontals();
-                for(Integer i : full){
+                for (Integer i : full) {
                     field.removeHorizontalLine(i);
                 }
-                if(field.toRemove(Duration.ZERO))field.removeCommit();
+                if (field.toRemove(Duration.ZERO)) field.removeCommit();
             }
         }
     }
@@ -237,8 +295,8 @@ public class GameScreenController implements Initializable {
 
         for (int i = 0; i < field.width; ++i) {
             for (int j = 0; j < field.height; ++j) {
-                field.getBlocks()[i][j].setXY(i,j);
-                setBlock(field.getBlocks()[i][j],gamePane);
+                field.getBlocks()[i][j].setXY(i, j);
+                setBlock(field.getBlocks()[i][j], gamePane);
             }
         }
         drawFigure();
@@ -246,24 +304,24 @@ public class GameScreenController implements Initializable {
 
     private void drawFigure() {
         for (Block block : field.getCurrentFigure().getBlocks()) {
-            setBlock(block,gamePane);
+            setBlock(block, gamePane);
         }
     }
 
-    private void drawNextFigure(){
+    private void drawNextFigure() {
         nextFigure.getChildren().clear();
         nextFigure.getColumnConstraints().clear();
         nextFigure.getRowConstraints().clear();
         PairInt saveCenter = field.getNextFigure().getCenter();
-        field.getNextFigure().setCenter(new PairInt(3,3));
+        field.getNextFigure().setCenter(new PairInt(3, 3));
         for (Block block : field.getNextFigure().getBlocks()) {
-            setBlock(block,nextFigure);
+            setBlock(block, nextFigure);
         }
 
         field.getNextFigure().setCenter(saveCenter);
     }
 
-    private void setBlock(Block current,GridPane pane) {
+    private void setBlock(Block current, GridPane pane) {
         if (current.getY() < 0) return;
         pane.add(current.getNode(), current.getX(), current.getY());
     }

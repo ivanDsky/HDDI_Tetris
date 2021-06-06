@@ -4,9 +4,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="720.0" style="-fx-background-color: beige;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameScreenController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="720.0" style="-fx-background-color: beige;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameScreenController">
    <children>
       <ImageView fitHeight="829.0" fitWidth="730.0" layoutX="-5.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -51,33 +52,55 @@
                               <Image url="@res/gameSpellsIcon.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="changeFigureButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="59.0" prefWidth="59.0" style="-fx-background-color: transparent;">
-                           <graphic>
-                              <ImageView fitHeight="55.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@res/gameRefreshButton.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="skipFigureButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="3.0" prefWidth="38.0" style="-fx-background-color: transparent;">
-                           <graphic>
-                              <ImageView fitHeight="55.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@res/gameSkipButton.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="freezeFigureButton" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: transparent;">
-                           <graphic>
-                              <ImageView fitHeight="55.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@res/gameFreezeButton.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
+                        <AnchorPane>
+                           <children>
+                              <Button fx:id="changeFigureButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="63.0" prefWidth="125.0" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="55.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@res/gameRefreshButton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Circle fill="#d1e9ff" layoutX="95.0" layoutY="50.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Label fx:id="countSwap" alignment="CENTER" layoutX="79.0" layoutY="39.0" prefHeight="25.0" prefWidth="33.0" text="10" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Comic Sans MS" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane>
+                           <children>
+                              <Button fx:id="skipFigureButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="63.0" prefWidth="125.0" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="55.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@res/gameSkipButton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Circle fill="#d1e9ff" layoutX="95.0" layoutY="50.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Label fx:id="countSkip" alignment="CENTER" layoutX="79.0" layoutY="39.0" prefHeight="25.0" prefWidth="33.0" text="10" textAlignment="CENTER" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane>
+                           <children>
+                              <Button fx:id="freezeFigureButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="63.0" prefWidth="125.0" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="55.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@res/gameFreezeButton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Circle fill="#d1e9ff" layoutX="95.0" layoutY="50.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                              <Label fx:id="countFreeze" alignment="CENTER" layoutX="79.0" layoutY="39.0" prefHeight="25.0" prefWidth="33.0" text="10" textAlignment="CENTER" />
+                           </children>
+                        </AnchorPane>
                      </children>
                      <opaqueInsets>
                         <Insets />

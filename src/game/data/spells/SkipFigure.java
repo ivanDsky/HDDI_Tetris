@@ -4,12 +4,16 @@ import game.data.Field;
 import game.data.Spell;
 
 public class SkipFigure extends Spell {
-    public SkipFigure(Field field) {
-        super(field);
+    public SkipFigure(Field field, int leftSpells) {
+        super(field,leftSpells);
     }
+
 
     @Override
     public void apply() {
-        field.skipMove();
+        if (leftSpells == INFINITE || leftSpells > 0) {
+            field.skipMove();
+            if (leftSpells > 0) leftSpells--;
+        }
     }
 }

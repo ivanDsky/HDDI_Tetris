@@ -1,7 +1,6 @@
 package game.data;
 
-import game.data.blocks.DeleteBlock;
-import game.data.blocks.EmptyBlock;
+import game.data.blocks.*;
 import game.data.shapes.HorizontalLineShape;
 import game.util.*;
 import javafx.animation.KeyFrame;
@@ -252,7 +251,17 @@ public class Field {
     }
 
     public Figure getRandomFigure() {
-        return Util.getRandomFigure();
+        Figure random = Util.getRandomFigure();
+        if(random.getBlocks().length >= 4)return random;
+        for(int i = 0;i < random.getBlocks().length; ++i){
+            Block block = random.getBlocks()[i];
+            int percent = Util.getRandomNumber(0,10000);
+            if(percent < 200)block = new RocketBlock(block.getXY());else
+            if(percent < 500)block = new DynamiteBlock(block.getXY());else
+            if(percent < 1500)block = new BombBlock(block.getXY());
+            random.setBlock(block,i);
+        }
+        return random;
     }
 
     public Figure getCurrentFigure() {

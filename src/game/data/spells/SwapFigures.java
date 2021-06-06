@@ -6,22 +6,25 @@ import game.data.Spell;
 import game.util.PairInt;
 
 public class SwapFigures extends Spell {
-    public SwapFigures(Field field) {
-        super(field);
+    public SwapFigures(Field field,int leftSpells) {
+        super(field,leftSpells);
     }
 
     @Override
     public void apply() {
-        Figure prevCurrent = field.getCurrentFigure();
-        Figure prevNext = field.getNextFigure();
-        PairInt coordinate = prevNext.getCenter();
-        prevNext.setCenter(prevCurrent.getCenter());
+        if(leftSpells == Spell.INFINITE || leftSpells > 0) {
+            if(leftSpells > 0)leftSpells--;
+            Figure prevCurrent = field.getCurrentFigure();
+            Figure prevNext = field.getNextFigure();
+            PairInt coordinate = prevNext.getCenter();
+            prevNext.setCenter(prevCurrent.getCenter());
 
-        if(field.isPlacedGood(prevNext)){
-            field.setNextFigure(prevCurrent);
-            field.setCurrentFigure(prevNext);
-        }else{
-            prevNext.setCenter(coordinate);
+            if (field.isPlacedGood(prevNext)) {
+                field.setNextFigure(prevCurrent);
+                field.setCurrentFigure(prevNext);
+            } else {
+                prevNext.setCenter(coordinate);
+            }
         }
     }
 }

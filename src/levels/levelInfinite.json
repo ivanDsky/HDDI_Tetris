@@ -1,8 +1,11 @@
 {
-  "number" : 6,
+  "number" : -1,
   "width" : 10,
   "height" : 14,
   "speed" : 1000,
-  "highScore" : 9000,
-  "field" : [ "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          " ]
+  "highScore" : 124500,
+  "field" : [ "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          ", "          " ],
+  "skipSpells" : 3,
+  "swapSpells" : 3,
+  "freezeSpells" : 3
 }

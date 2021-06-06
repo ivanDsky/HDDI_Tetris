@@ -7,4 +7,8 @@ public class Level {
     public int speed;
     public int highScore;
     public char[][] field;
+
+    public int skipSpells;
+    public int swapSpells;
+    public int freezeSpells;
 }
