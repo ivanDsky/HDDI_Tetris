@@ -30,23 +30,9 @@ public class FileLoadLevel extends LoadLevel{
         return ret;
     }
 
-    @Override
-    public int getWidth() {
-        return level.width;
-    }
 
     @Override
-    public int getHeight() {
-        return level.height;
-    }
-
-    @Override
-    public int getLevel() {
-        return level.number;
-    }
-
-    @Override
-    public int getSpeed() {
-        return level.speed;
+    public Level getLevel() {
+        return level;
     }
 }

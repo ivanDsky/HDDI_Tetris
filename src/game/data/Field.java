@@ -23,16 +23,19 @@ public class Field {
     public int gamePause = 1200;
     public int blocksToDelete;
     public int blocksToDeleteLeft;
+    public SimpleIntegerProperty score;
 
     public IntegerProperty state = new SimpleIntegerProperty(GameState.PLAY.ordinal());
 
     public Field(LoadLevel loadLevel) {
         next = getRandomFigure();
         skipMove();
+        Level level = loadLevel.getLevel();
         gameField = loadLevel.loadBlocks();
-        width = loadLevel.getWidth();
-        height = loadLevel.getHeight();
-        gamePause = loadLevel.getSpeed();
+        width = level.width;
+        height = level.height;
+        gamePause = level.speed;
+        score = new SimpleIntegerProperty(0);
         timeline = new Timeline();
     }
 
@@ -142,7 +145,11 @@ public class Field {
             Block block = getBlocks()[coordinate.getX()][coordinate.getY()];
             KeyFrame temp = block.animation();
             if (temp == null) continue;
-            temp = new KeyFrame(lastDuration.add(temp.getTime().divide(2)),temp.getOnFinished());
+            KeyFrame finalTemp = temp;
+            temp = new KeyFrame(lastDuration.add(temp.getTime().divide(2)), actionEvent -> {
+                finalTemp.getOnFinished().handle(actionEvent);
+                score.add(300);
+            });
             timeline.getKeyFrames().add(temp);
             last = temp;
         }

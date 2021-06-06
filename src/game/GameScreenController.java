@@ -1,22 +1,23 @@
 package game;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import game.data.*;
 import game.data.spells.FreezeGame;
 import game.data.spells.SkipFigure;
 import game.data.spells.SwapFigures;
-import game.util.FileLoadLevel;
-import game.util.LoadLevel;
-import game.util.PairInt;
-import game.util.Timer;
+import game.util.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -32,7 +33,12 @@ public class GameScreenController implements Initializable {
     private Button freezeFigureButton;
     @FXML
     private Button skipFigureButton;
+    @FXML
+    private Label score;
+    @FXML
+    private Label bestScore;
     private Field field;
+    private Level level;
 
     private boolean isRotateReloaded = true;
     private boolean isMoveDownReloaded = true;
@@ -70,14 +76,31 @@ public class GameScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         LoadLevel loadLevel = new FileLoadLevel("temp.json");
-
+        level= loadLevel.getLevel();
+        level.highScore = 18000;
         field = new Field(loadLevel);
+
+        field.score.addListener((observableValue, number, t1) -> {
+            int scoreInt = field.score.get();
+            if(scoreInt > level.highScore)level.highScore = scoreInt;
+            score.setText(Integer.toString(scoreInt));
+            bestScore.setText(Integer.toString(level.highScore));
+        });
 
         changeFigureButton.setOnAction(actionEvent -> (new SwapFigures(field)).apply());
         skipFigureButton.setOnAction(actionEvent -> (new SkipFigure(field)).apply());
         freezeFigureButton.setOnAction(actionEvent -> (new FreezeGame(field)).apply());
 
         startGame();
+    }
+
+    private void saveHighScore(){
+        try {
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(new File("temp.json"),level);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private Timer timer;
@@ -101,6 +124,7 @@ public class GameScreenController implements Initializable {
             if(isDownPressed)isMoveDownReloaded = false;
             if (!field.endMove()){
                 timer.stop();
+                saveHighScore();
             }else{
                 field.state.set(GameState.REMOVE.ordinal());
                 List<Integer> full = field.fullHorizontals();

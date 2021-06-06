@@ -13,7 +13,8 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("gameScreen.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setScene(new Scene(root, 700, 800));
+        primaryStage.setResizable(false);
         primaryStage.show();
 
         GameScreenController controller = loader.getController();
