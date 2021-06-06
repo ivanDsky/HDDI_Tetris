@@ -1,160 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<BorderPane prefWidth="720.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameScreenController">
-   <center>
-      <GridPane fx:id="gamePane" gridLinesVisible="true" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.1763000488281" minWidth="10.0" prefWidth="473.1763000488281" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="355.51776123046875" minWidth="10.0" prefWidth="246.82369995117188" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-      </GridPane>
-   </center>
-   <right>
-      <AnchorPane prefHeight="600.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1124.0" prefWidth="1000.0" style="-fx-background-color: beige;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameScreenController">
+   <children>
+      <ImageView fitHeight="1135.0" fitWidth="1023.0" layoutX="-5.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@res/gameMainBG.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="266.0" fitWidth="269.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@res/gameLevelIcon.png" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="215.0" layoutY="275.0" prefHeight="800.0" prefWidth="500.0" style="-fx-background-radius: 10;">
          <children>
-            <VBox prefHeight="600.0" prefWidth="240.0" style="-fx-background-color: white;">
-               <children>
-                  <FlowPane alignment="CENTER" prefHeight="119.0" prefWidth="246.0">
-                     <children>
-                        <Label prefHeight="87.0" prefWidth="205.0" text="TETRIS">
-                           <font>
-                              <Font name="Baskerville" size="56.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="131.0" prefWidth="247.0">
-                     <children>
-                        <ImageView fitHeight="81.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@res/gameScore.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="30.0" prefWidth="145.0">
-                     <children>
-                        <Label fx:id="score" alignment="TOP_CENTER" prefHeight="40.0" prefWidth="89.0" text="0">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="30.0" prefWidth="145.0">
-                     <children>
-                        <ImageView fitHeight="167.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@res/gameBestScore.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="30.0" prefWidth="145.0">
-                     <children>
-                        <Label fx:id="bestScore" alignment="TOP_CENTER" prefHeight="56.0" prefWidth="73.0" text="0">
-                           <font>
-                              <Font size="23.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="125.0" prefWidth="254.0">
-                     <children>
-                        <ImageView fitHeight="81.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@res/gameCubes.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="cubes" alignment="CENTER" prefHeight="28.0" prefWidth="67.0" text="14/25">
-                           <font>
-                              <Font size="21.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="50.0" prefWidth="145.0">
-                     <children>
-                        <Label alignment="CENTER" prefHeight="49.0" prefWidth="115.0" text="Next figure">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </FlowPane>
-                  <FlowPane alignment="CENTER" prefHeight="139.0" prefWidth="215.0">
-                     <children>
-                        <GridPane fx:id="nextFigure" alignment="CENTER" maxHeight="180.0" maxWidth="200.0" prefHeight="180.0" prefWidth="200.0">
-                           <columnConstraints>
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                        </GridPane>
-                     </children>
-                  </FlowPane>
-               </children>
-            </VBox>
+            <GridPane fx:id="gameField" prefHeight="800.0" prefWidth="500.0" style="-fx-background-color: white; -fx-background-radius: 10;">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
          </children>
       </AnchorPane>
-   </right>
-   <bottom>
-      <HBox alignment="CENTER" prefHeight="80.0" prefWidth="465.0" spacing="25" style="-fx-background-color: transperent;" BorderPane.alignment="CENTER">
+      <AnchorPane layoutX="745.0" layoutY="400.0" opacity="0.85" prefHeight="520.0" prefWidth="232.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-background-color: lightgrey;" />
+      <VBox layoutX="745.0" layoutY="400.0" prefHeight="523.0" prefWidth="231.0" style="-fx-background-color: transparent; -fx-border-radius: 30; -fx-background-radius: 30;">
          <children>
-          <Button fx:id="changeFigureButton" mnemonicParsing="false" prefHeight="7.0" prefWidth="42.0">
-               <graphic>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+            <AnchorPane prefHeight="51.0" prefWidth="231.0" />
+            <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="134.0" prefWidth="231.0">
+               <children>
+                  <ImageView fitHeight="70.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@res/refresh.png" />
+                        <Image url="@res/gameScore.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="score" alignment="CENTER" contentDisplay="CENTER" prefHeight="61.0" prefWidth="121.0" text="0">
+                     <font>
+                        <Font name="Chalkboard SE Light" size="31.0" />
+                     </font>
+                  </Label>
+               </children>
+            </FlowPane>
+            <AnchorPane prefHeight="37.0" prefWidth="231.0" />
+            <FlowPane alignment="CENTER" prefHeight="106.0" prefWidth="231.0">
+               <children>
+                  <ImageView fitHeight="99.0" fitWidth="196.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@res/gameHighestScore.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="bestScore" alignment="CENTER" prefHeight="56.0" prefWidth="150.0" text="0">
+                     <font>
+                        <Font name="Chalkboard SE Light" size="30.0" />
+                     </font>
+                  </Label>
+               </children>
+            </FlowPane>
+            <FlowPane alignment="CENTER" prefHeight="125.0" prefWidth="254.0">
+               <children>
+                  <ImageView fitHeight="81.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@res/gameCubes.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="cubes" alignment="CENTER" prefHeight="37.0" prefWidth="78.0" text="14/25">
+                     <font>
+                        <Font name="Chalkboard SE Light" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </FlowPane>
+         </children>
+      </VBox>
+      <AnchorPane layoutX="15.0" layoutY="350.0" opacity="0.85" prefHeight="649.0" prefWidth="174.0" style="-fx-background-color: lightgrey; -fx-background-radius: 30;" />
+      <VBox alignment="CENTER" layoutX="15.0" layoutY="350.0" prefHeight="649.0" prefWidth="174.0" spacing="25">
+         <children>
+            <ImageView fitHeight="144.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@res/gameSpellsIcon.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="changeFigureButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="59.0" prefWidth="59.0" style="-fx-background-color: transparent;">
+               <graphic>
+                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@res/gameRefreshButton.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="skipFigureButton" mnemonicParsing="false" prefHeight="3.0" prefWidth="38.0">
+            <Button fx:id="skipFigureButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="3.0" prefWidth="38.0" style="-fx-background-color: transperant;">
                <graphic>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@res/skipButton.png" />
+                        <Image url="@res/gameSkipButton.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="freezeFigureButton" mnemonicParsing="false">
+            <Button fx:id="freezeFigureButton" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: transparent;">
                <graphic>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@res/freezeButton.png" />
+                        <Image url="@res/gameFreezeButton.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false">
+            <Button contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: transparent;">
                <graphic>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="75.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@res/slowFigureButton.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button mnemonicParsing="false">
-               <graphic>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@res/refresh.png" />
+                        <Image url="@res/gameSlowButton.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
          </children>
-      </HBox>
-   </bottom>
-</BorderPane>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <Label layoutX="46.0" layoutY="67.0" prefHeight="82.0" prefWidth="194.0" text="TETRIS:HDDI">
+         <font>
+            <Font name="Chalkboard SE Light" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="55.0" layoutY="131.0" prefHeight="55.0" prefWidth="94.0" text="Level:">
+         <font>
+            <Font name="Chalkboard SE Light" size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="135.0" layoutY="131.0" prefHeight="57.0" prefWidth="31.0" text="1">
+         <font>
+            <Font name="Chalkboard SE Light" size="33.0" />
+         </font>
+      </Label>
+      <Button layoutX="901.0" layoutY="32.0" mnemonicParsing="false" style="-fx-background-color: transperant;">
+         <graphic>
+            <ImageView fitHeight="105.0" fitWidth="54.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@res/gamePauseButton.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <AnchorPane layoutX="504.0" layoutY="112.0" prefHeight="151.0" prefWidth="162.0">
+         <children>
+            <GridPane layoutX="3.0" layoutY="-2.0" prefHeight="145.0" prefWidth="173.0" style="-fx-background-radius: 10; -fx-background-color: white;">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </children></AnchorPane>
+      <Label layoutX="328.0" layoutY="170.0" prefHeight="44.0" prefWidth="167.0" text="Next Figure:">
+         <font>
+            <Font name="Chalkboard SE Light" size="28.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
