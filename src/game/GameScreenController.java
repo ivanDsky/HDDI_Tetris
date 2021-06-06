@@ -51,6 +51,20 @@ public class GameScreenController implements Initializable {
     private Label cubes;
     @FXML
     private Button pauseButton;
+
+
+    @FXML
+    private AnchorPane pauseMenu;
+
+    @FXML
+    private Button playButton;
+    @FXML
+    private Button menuButton;
+    @FXML
+    private Button resetButton;
+    @FXML
+    private Label pauseLabel;
+
     private Field field;
     private Level level;
 
@@ -93,7 +107,7 @@ public class GameScreenController implements Initializable {
         field = new Field(loadLevel);
 
         field.score.addListener((observableValue, number, t1) -> {
-            int scoreInt = field.score.get();
+            int scoreInt = t1.intValue();
             if(scoreInt > level.highScore)level.highScore = scoreInt;
             score.setText(Integer.toString(scoreInt));
             bestScore.setText(Integer.toString(level.highScore));
@@ -101,16 +115,42 @@ public class GameScreenController implements Initializable {
         field.score.set(0);
         field.blocksDeleted.addListener((observableValue, number, t1) -> {
             cubes.setText(String.format("%d/%d",field.blocksDeleted.get(),field.blocksToDelete));
+            if(field.blocksToDelete != 0 && field.isGameWon()){
+                pauseMenu.setVisible(true);
+                pauseLabel.setText("You win!!!");
+                playButton.setManaged(false);
+                playButton.setVisible(false);
+                field.state.set(GameState.END.ordinal());
+                saveHighScore();
+            }
         });
         field.blocksDeleted.set(0);
 
+        if(level.number == 6)levelNumber.setText("∞");
+        else
         levelNumber.setText(Integer.toString(level.number));
 
-        changeFigureButton.setOnAction(actionEvent -> (new SwapFigures(field)).apply());
-        skipFigureButton.setOnAction(actionEvent -> (new SkipFigure(field)).apply());
-        freezeFigureButton.setOnAction(actionEvent -> (new FreezeGame(field)).apply());
+        changeFigureButton.setOnAction(actionEvent -> {
+            if(field.state.get() == GameState.PLAY.ordinal())
+                (new SwapFigures(field)).apply();
+        });
+        skipFigureButton.setOnAction(actionEvent -> {
+            if(field.state.get() == GameState.PLAY.ordinal())
+                (new SkipFigure(field)).apply();
+        });
+        freezeFigureButton.setOnAction(actionEvent -> {
+            if(field.state.get() == GameState.PLAY.ordinal())
+                (new FreezeGame(field)).apply();
+        });
         pauseButton.setOnAction(actionEvent -> {
-            saveHighScore();
+            pauseLabel.setText("Pause");
+            pauseMenu.setVisible(true);
+            playButton.setManaged(true);
+            playButton.setVisible(true);
+            field.state.set(GameState.PAUSE.ordinal());
+        });
+
+        menuButton.setOnAction(actionEvent ->{
             Stage primaryStage = (Stage) changeFigureButton.getScene().getWindow();
             Parent root = null;
             try {
@@ -130,13 +170,18 @@ public class GameScreenController implements Initializable {
             primaryStage.setX(centerX);
         });
 
+        playButton.setOnAction(actionEvent -> {
+            pauseMenu.setVisible(false);
+            field.state.set(GameState.PLAY.ordinal());
+        });
+
         addKeys();
         startGame();
     }
 
     private void saveHighScore(){
         try {
-            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(new File("temp.json"),level);
+            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValue(new File(Main.levelPath),level);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -149,7 +194,6 @@ public class GameScreenController implements Initializable {
         timer = new Timer(field.gamePause) {
             @Override
             public void handle() {
-                if(field.state.get() != GameState.PLAY.ordinal())return;
                 step();
                 timer.setCycleDuration(field.gamePause);
             }
@@ -158,13 +202,23 @@ public class GameScreenController implements Initializable {
     }
 
     private void step() {
-        drawNextFigure();
+        if(field.state.get() != GameState.PLAY.ordinal())return;
         drawField();
+        drawNextFigure();
         if (!field.move(Move.DOWN)) {
             if(isDownPressed)isMoveDownReloaded = false;
             if (!field.endMove()){
+                playButton.setManaged(false);
+                playButton.setVisible(false);
+                if(level.number == 6){
+                    pauseLabel.setText("Your score " + field.score.get());
+                    saveHighScore();
+                }else {
+                    pauseLabel.setText("You lose...");
+                }
+                pauseMenu.setVisible(true);
+                field.state.set(GameState.END.ordinal());
                 timer.stop();
-                saveHighScore();
             }else{
                 field.state.set(GameState.REMOVE.ordinal());
                 List<Integer> full = field.fullHorizontals();

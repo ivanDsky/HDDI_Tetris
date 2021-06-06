@@ -158,8 +158,8 @@ public class Field {
             KeyFrame finalTemp = temp;
             temp = new KeyFrame(lastDuration.add(temp.getTime().divide(2)), actionEvent -> {
                 finalTemp.getOnFinished().handle(actionEvent);
-                if(block instanceof DeleteBlock)blocksDeleted.set(blocksDeleted.get() + 1);
                 score.set(score.get() + 300);
+                if(block instanceof DeleteBlock)blocksDeleted.set(blocksDeleted.get() + 1);
             });
             timeline.getKeyFrames().add(temp);
             last = temp;
@@ -201,7 +201,7 @@ public class Field {
                 }
             }
             gameField = blocks;
-            state.set(GameState.PLAY.ordinal());
+            if(GameState.REMOVE.ordinal() == state.get())state.set(GameState.PLAY.ordinal());
             timeline.getKeyFrames().clear();
             used = new boolean[width][height];
             blocked = new boolean[width][height];

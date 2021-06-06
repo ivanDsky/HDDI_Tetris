@@ -4,8 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="720.0" style="-fx-background-color: beige;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameScreenController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="810.0" prefWidth="720.0" style="-fx-background-color: beige;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameScreenController">
    <children>
       <ImageView fitHeight="829.0" fitWidth="730.0" layoutX="-5.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -160,6 +161,47 @@
             </AnchorPane>
          </center>
       </BorderPane>
+      <AnchorPane fx:id="pauseMenu" layoutX="115.0" layoutY="260.0" prefHeight="240.0" prefWidth="481.0" visible="false" AnchorPane.topAnchor="260.0">
+         <children>
+            <Rectangle arcHeight="80.0" arcWidth="80.0" fill="#394d52b2" height="240.0" stroke="BLACK" strokeType="INSIDE" width="480.0" />
+            <FlowPane alignment="CENTER" layoutY="57.0" prefHeight="176.0" prefWidth="481.0">
+               <children>
+                  <Button fx:id="playButton" mnemonicParsing="false" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@res/playButton.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="menuButton" mnemonicParsing="false" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@res/menuButton.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="resetButton" mnemonicParsing="false" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@res/replayButton.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </FlowPane>
+            <Label fx:id="pauseLabel" alignment="CENTER" prefHeight="87.0" prefWidth="481.0" text="Pause" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Comic Sans MS" size="42.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
       <BorderPane layoutX="366.0" layoutY="93.0" prefHeight="120.0" prefWidth="180.0">
          <center>
             <GridPane fx:id="nextFigure" alignment="CENTER" style="-fx-background-radius: 10; -fx-background-color: white;" BorderPane.alignment="CENTER">
