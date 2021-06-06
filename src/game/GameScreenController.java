@@ -37,6 +37,10 @@ public class GameScreenController implements Initializable {
     private Label score;
     @FXML
     private Label bestScore;
+    @FXML
+    private Label levelNumber;
+    @FXML
+    private Label cubes;
     private Field field;
     private Level level;
 
@@ -77,7 +81,6 @@ public class GameScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         LoadLevel loadLevel = new FileLoadLevel("temp.json");
         level= loadLevel.getLevel();
-        level.highScore = 18000;
         field = new Field(loadLevel);
 
         field.score.addListener((observableValue, number, t1) -> {
@@ -87,6 +90,12 @@ public class GameScreenController implements Initializable {
             bestScore.setText(Integer.toString(level.highScore));
         });
         field.score.set(20);
+        field.blocksDeleted.addListener((observableValue, number, t1) -> {
+            cubes.setText(String.format("%d/%d",field.blocksDeleted.get(),field.blocksToDelete));
+        });
+        field.blocksDeleted.set(0);
+
+        levelNumber.setText(Integer.toString(level.number));
 
         changeFigureButton.setOnAction(actionEvent -> (new SwapFigures(field)).apply());
         skipFigureButton.setOnAction(actionEvent -> (new SkipFigure(field)).apply());

@@ -1,5 +1,6 @@
 package game.data;
 
+import game.data.blocks.DeleteBlock;
 import game.data.blocks.EmptyBlock;
 import game.data.shapes.HorizontalLineShape;
 import game.util.*;
@@ -22,8 +23,8 @@ public class Field {
     private Figure next;
     public int gamePause = 1200;
     public int blocksToDelete;
-    public int blocksToDeleteLeft;
     public SimpleIntegerProperty score;
+    public SimpleIntegerProperty blocksDeleted;
 
     public IntegerProperty state = new SimpleIntegerProperty(GameState.PLAY.ordinal());
 
@@ -34,8 +35,15 @@ public class Field {
         gameField = loadLevel.loadBlocks();
         width = level.width;
         height = level.height;
+        for(int i = 0;i < width; ++i){
+            for(int j = 0;j < height; ++j){
+                if(Character.toLowerCase(level.field[j][i]) == 'x')blocksToDelete++;
+            }
+        }
+
         gamePause = level.speed;
-        score = new SimpleIntegerProperty(0);
+        score = new SimpleIntegerProperty(-1);
+        blocksDeleted = new SimpleIntegerProperty(-1);
         timeline = new Timeline();
     }
 
@@ -94,7 +102,7 @@ public class Field {
     }
 
     public boolean isGameWon() {
-        return blocksToDeleteLeft <= 0;
+        return blocksDeleted.get() == blocksToDelete;
     }
 
     public boolean endMove() {
@@ -148,7 +156,8 @@ public class Field {
             KeyFrame finalTemp = temp;
             temp = new KeyFrame(lastDuration.add(temp.getTime().divide(2)), actionEvent -> {
                 finalTemp.getOnFinished().handle(actionEvent);
-                score.add(300);
+                if(block instanceof DeleteBlock)blocksDeleted.set(blocksDeleted.get() + 1);
+                score.set(score.get() + 300);
             });
             timeline.getKeyFrames().add(temp);
             last = temp;
@@ -210,6 +219,7 @@ public class Field {
     public void removeBlock(PairInt coordinate) {
         if (used[coordinate.getX()][coordinate.getY()]) return;
         used[coordinate.getX()][coordinate.getY()] = true;
+
         gameField[coordinate.getX()][coordinate.getY()] = gameField[coordinate.getX()][coordinate.getY()].removeBlock(this);
     }
 
