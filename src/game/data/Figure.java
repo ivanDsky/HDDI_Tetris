@@ -76,6 +76,9 @@ public abstract class Figure {
         return blocks;
     }
 
+    public PairInt getCenter() {
+        return center;
+    }
 }
 
 

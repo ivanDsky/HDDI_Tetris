@@ -4,13 +4,15 @@ import game.data.Block;
 import game.data.Field;
 import game.data.Move;
 import game.data.Rotation;
-import game.data.blocks.EmptyBlock;
+import game.data.spells.SwapFigures;
 import game.util.FileLoadLevel;
 import game.util.LoadLevel;
+import game.util.PairInt;
 import game.util.Timer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
@@ -20,12 +22,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class GameScreenController implements Initializable {
-    private static int NEXT_WIDTH = 6;
-    private static int NEXT_HEIGHT = 4;
     @FXML
     private GridPane gamePane;
     @FXML
     private GridPane nextFigure;
+    @FXML
+    private Button changeFigureButton;
     private Field field;
 
     private boolean isRotateReloaded = true;
@@ -68,10 +70,7 @@ public class GameScreenController implements Initializable {
 
         field = new Field(loadLevel);
 
-//        field.setCurrentFigure(new IFigure(new PairInt(3,13)));
-//        field.endMove();
-//        field.setCurrentFigure(new IFigure(new PairInt(5,13)));
-//        field.endMove();
+        changeFigureButton.setOnAction(actionEvent -> (new SwapFigures(field)).apply());
 
         startGame();
     }
@@ -115,8 +114,8 @@ public class GameScreenController implements Initializable {
     }
 
     public void drawField() {
-        gamePane.getColumnConstraints().clear();
         gamePane.getRowConstraints().clear();
+        gamePane.getColumnConstraints().clear();
         gamePane.getChildren().clear();
 
         for (int i = 0; i < field.width; ++i) {
@@ -135,11 +134,7 @@ public class GameScreenController implements Initializable {
 
     private void drawNextFigure(){
         nextFigure.getChildren().clear();
-        for(int i = 0;i < NEXT_WIDTH; ++i){
-            for(int j = 0;j < NEXT_HEIGHT; ++j){
-                setBlock(new EmptyBlock(i,j),nextFigure);
-            }
-        }
+        field.getNextFigure().setCenter(new PairInt(3,3));
         for (Block block : field.getNextFigure().getBlocks()) {
             setBlock(block,nextFigure);
         }

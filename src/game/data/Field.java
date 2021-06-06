@@ -21,6 +21,7 @@ public class Field {
 
     public Field(LoadLevel loadLevel) {
         current = getRandomFigure();
+        current.setCenter(new PairInt(Util.getRandomNumber(2, width - 3), -2));
         next = getRandomFigure();
         gameField = loadLevel.loadBlocks();
         width = loadLevel.getWidth();
@@ -194,9 +195,7 @@ public class Field {
     }
 
     public Figure getRandomFigure() {
-        Figure ret = Util.getRandomFigure();
-        ret.setCenter(new PairInt(Util.getRandomNumber(2, width - 3), -2));
-        return ret;
+        return Util.getRandomFigure();
     }
 
     public Figure getCurrentFigure() {
@@ -205,6 +204,10 @@ public class Field {
 
     public void setCurrentFigure(Figure newCurrent) {
         current = newCurrent;
+    }
+
+    public void setNextFigure(Figure newNext){
+        next = newNext;
     }
 
     public Figure getNextFigure() {

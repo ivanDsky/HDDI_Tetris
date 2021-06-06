@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <BorderPane prefWidth="720.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.GameScreenController">
    <center>
-      <GridPane fx:id="gamePane" gridLinesVisible="true" maxHeight="840.0" maxWidth="600.0" minHeight="840.0" minWidth="600.0" BorderPane.alignment="CENTER">
+      <GridPane fx:id="gamePane" gridLinesVisible="true" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.1763000488281" minWidth="10.0" prefWidth="473.1763000488281" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="355.51776123046875" minWidth="10.0" prefWidth="246.82369995117188" />
