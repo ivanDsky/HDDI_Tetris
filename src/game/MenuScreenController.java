@@ -24,6 +24,7 @@ public class MenuScreenController {
         playButton.setOnAction(actionEvent -> {
             Main.levelPath = "src/levels/levelInfinite.json";
             loadScreen("gameScreen.fxml",700,820);
+
         });
         levelsButton.setOnAction(actionEvent -> loadScreen("levelsScreen.fxml",720,480));
         quitButton.setOnAction(actionEvent -> ((Stage) playButton.getScene().getWindow()).close());

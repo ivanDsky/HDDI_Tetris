@@ -1,5 +1,6 @@
 package game.data;
 
+import game.Main;
 import game.data.blocks.*;
 import game.data.shapes.HorizontalLineShape;
 import game.util.*;
@@ -7,6 +8,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.media.AudioClip;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -159,6 +161,9 @@ public class Field {
                 finalTemp.getOnFinished().handle(actionEvent);
                 score.set(score.get() + 300);
                 if(block instanceof DeleteBlock)blocksDeleted.set(blocksDeleted.get() + 1);
+                AudioClip clip = new AudioClip(Main.class.getResource("res/exp.wav").toExternalForm());
+                clip.setVolume(.3);
+                clip.play();
             });
             timeline.getKeyFrames().add(temp);
             last = temp;

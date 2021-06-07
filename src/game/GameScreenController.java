@@ -18,6 +18,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -79,6 +82,8 @@ public class GameScreenController implements Initializable {
     private boolean isMoveDownReloaded = true;
     private boolean isDownPressed = false;
 
+    public MediaPlayer mediaPlayer;
+
     public void addKeys() {
         rootPane.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
             if (field.state.get() != GameState.PLAY.ordinal()) return;
@@ -113,6 +118,11 @@ public class GameScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Media media = new Media(getClass().getResource("res/back.mp3").toExternalForm());
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setVolume(.1);
+        mediaPlayer.setOnEndOfMedia(() -> {mediaPlayer.seek(Duration.ZERO);});
+        mediaPlayer.play();
         LoadLevel loadLevel = new FileLoadLevel(Main.levelPath);
         level = loadLevel.getLevel();
         field = new Field(loadLevel);
@@ -131,10 +141,14 @@ public class GameScreenController implements Initializable {
             cubes.setText(String.format("%d/%d", field.blocksDeleted.get(), field.blocksToDelete));
             if (field.blocksToDelete != 0 && field.isGameWon()) {
                 pauseMenu.setVisible(true);
+                mediaPlayer.stop();
                 pauseLabel.setText("You win!!!");
                 playButton.setManaged(false);
                 playButton.setVisible(false);
                 field.state.set(GameState.END.ordinal());
+                AudioClip clip = new AudioClip(getClass().getResource("res/win.wav").toExternalForm());
+                clip.setVolume(.3);
+                clip.play();
                 saveHighScore();
             }
         });
@@ -175,6 +189,7 @@ public class GameScreenController implements Initializable {
         pauseButton.setOnAction(actionEvent -> {
             pauseLabel.setText("Pause");
             pauseMenu.setVisible(true);
+            mediaPlayer.stop();
             playButton.setManaged(true);
             playButton.setVisible(true);
             field.state.set(GameState.PAUSE.ordinal());
@@ -202,6 +217,7 @@ public class GameScreenController implements Initializable {
 
         playButton.setOnAction(actionEvent -> {
             pauseMenu.setVisible(false);
+            mediaPlayer.play();
             field.state.set(GameState.PLAY.ordinal());
         });
 
@@ -268,11 +284,18 @@ public class GameScreenController implements Initializable {
             if (!field.endMove()) {
                 playButton.setManaged(false);
                 playButton.setVisible(false);
+                mediaPlayer.stop();
                 if (level.number == -1) {
                     pauseLabel.setText("Your score " + field.score.get());
                     saveHighScore();
+                    AudioClip clip = new AudioClip(getClass().getResource("res/win2.wav").toExternalForm());
+                    clip.setVolume(.3);
+                    clip.play();
                 } else {
                     pauseLabel.setText("You lose...");
+                    AudioClip clip = new AudioClip(getClass().getResource("res/lose.wav").toExternalForm());
+                    clip.setVolume(.3);
+                    clip.play();
                 }
                 pauseMenu.setVisible(true);
                 field.state.set(GameState.END.ordinal());
